@@ -20,7 +20,7 @@
                     x:Name="distanceSlider" 
                     Minimum="1.0" 
                     Maximum="1.5" 
-                    Value="1.1" 
+                    Value="1.4" 
                     TickFrequency="0.1" 
                     IsSnapToTickEnabled="True" ValueChanged="distanceSlider_ValueChanged"/>
             
@@ -29,7 +29,7 @@
                 x:Name="speedSlider" 
                 Minimum="1" 
                 Maximum="10" 
-                Value="1" 
+                Value="7" 
                 TickFrequency="1" 
                 IsSnapToTickEnabled="True" ValueChanged="speedSlider_ValueChanged"/>
             <Label Foreground="White" Content="Circle Settings" HorizontalContentAlignment="Center" FontSize="16"/>

@@ -50,7 +50,9 @@ namespace MotionBlindness
 
             circles.Add(ShapeHelper.CreateCircle(circleDiameter, 400, 100, circleBrush));
             circles.Add(ShapeHelper.CreateCircle(circleDiameter, 400, 700, circleBrush));
-            circles.Add(ShapeHelper.CreateCircle(circleDiameter, 200, 300, circleBrush));
+            circles.Add(ShapeHelper.CreateCircle(circleDiameter, 100, 400, circleBrush));
+            circles.Add(ShapeHelper.CreateCircle(circleDiameter, 700, 400, circleBrush));
+
 
 
             mainStage.Children.Add(circles[0]);
