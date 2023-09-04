@@ -161,7 +161,7 @@ namespace GraphicsCommon
             var foo = this.Vertices.Length;
 
             Point[] pictureVertices = new Point[this.Vertices.Length];
-            double scale = 300;
+            double scale = 800;
             for (int i = 0; i < this.Vertices.Length / 3; i++)
             {
                 double x = this.Vertices[i, 0];

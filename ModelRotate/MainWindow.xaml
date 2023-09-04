@@ -8,6 +8,6 @@
         
         Title="MainWindow" Height="800" Width="800">
     <Grid Background="Black">
-        <Canvas x:Name="Paper" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Blue"/>
+        <Canvas x:Name="Paper" VerticalAlignment="Top" HorizontalAlignment="Left" Background="Blue"/>
     </Grid>
 </Window>

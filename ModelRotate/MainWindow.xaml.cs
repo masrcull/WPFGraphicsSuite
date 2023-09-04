@@ -59,7 +59,7 @@ namespace ModelRotate
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
                 gp.Children.Clear();
-                gp.Background = Brushes.Blue;
+
                 cubeModel.RotateY((5 * Math.PI) / 180);
                 //cubeModel.RotateZ((5 * Math.PI) / 180);
                 plusModel.RotateZ((5 * Math.PI) / 180);
