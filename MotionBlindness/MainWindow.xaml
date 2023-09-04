@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MotionBlindness"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
-    <Grid>
-        <Canvas Name="mainStage" />
+        Title="MainWindow" Height="800" Width="1200">
+    <Grid Background="Black">
+        <StackPanel Background="Beige" HorizontalAlignment="Left" Width="200">
+            <Label Content="Distance Between" HorizontalContentAlignment="Center"/>
+
+            <Slider Width="Auto" Margin="5,0,5,20"
+                    x:Name="distanceSlider" 
+                    Minimum="1.0" 
+                    Maximum="1.5" 
+                    Value="1.1" 
+                    TickFrequency="0.1" 
+                    IsSnapToTickEnabled="True" ValueChanged="distanceSlider_ValueChanged"/>
+            <Label Content="Rotation Speed" HorizontalContentAlignment="Center"/>
+            <Slider Width="Auto" Margin="5,0,5,20"
+                x:Name="speedSlider" 
+                Minimum="1.0" 
+                Maximum="1.5" 
+                Value="1.1" 
+                TickFrequency="0.1" 
+                IsSnapToTickEnabled="True" ValueChanged="distanceSlider_ValueChanged"/>
+            <Label Content="Circle Settings" HorizontalContentAlignment="Center"/>
+            <Grid Height="120">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="150" />
+                </Grid.ColumnDefinitions>
+                <Label Content="R" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18"/>
+                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,5,3,95"/>
+                <Label Content="G" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Margin="0,22,0,0"/>
+                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,26,3,75"/>
+                <Label Content="B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Margin="0,44,0,0"/>
+                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,48,3,53"/>
+                
+                <Label Grid.Column="1" Content="Diameter" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top"/>
+
+
+            </Grid>
+
+        </StackPanel>
+
+        <Canvas Name="MainStage" HorizontalAlignment="Right"  Width="800" Height="800" Margin="0,0,50,0">
+            <Canvas.LayoutTransform>
+                <ScaleTransform ScaleX="-1" ScaleY="-1" CenterX="400" CenterY="400"/>
+            </Canvas.LayoutTransform>
+        </Canvas>
+
     </Grid>
 </Window>

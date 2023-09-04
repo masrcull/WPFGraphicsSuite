@@ -32,8 +32,8 @@ namespace ModelRotate
             gp = this.FindName("Paper") as Canvas;
 
 
-            var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json");
-            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
+            //var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json");
+            //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
             double[] Eye = new double[3]
             { 0, 0, 0 };
@@ -46,9 +46,9 @@ namespace ModelRotate
             byte green = 128;
             byte blue = 200;
 
-            cubeModel.Scale(new double[] { 17, 17, 17 });
-            plusModel.Translate(new double[] { 0, 0, 3 });
-            plusModel.Scale(new double[] { 1,1,0 });
+            //cubeModel.Scale(new double[] { 17, 17, 17 });
+            //plusModel.Translate(new double[] { 0, 0, 3 });
+            //plusModel.Scale(new double[] { 1,1,0 });
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
@@ -60,13 +60,13 @@ namespace ModelRotate
 
                 gp.Children.Clear();
 
-                cubeModel.RotateY((5 * Math.PI) / 180);
+                //cubeModel.RotateY((5 * Math.PI) / 180);
                 //cubeModel.RotateZ((5 * Math.PI) / 180);
-                plusModel.RotateZ((5 * Math.PI) / 180);
+                //plusModel.RotateZ((5 * Math.PI) / 180);
                 //plusModel.RotateZ((5 * Math.PI) / 180);
                 //cubeModel.RotateX((5 * Math.PI) / 180);
                 //cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
-                plusModel.DrawFaces(Brushes.Red, gp, Eye);
+                //plusModel.DrawFaces(Brushes.Red, gp, Eye);
 
 
 

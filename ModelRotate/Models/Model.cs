@@ -22,9 +22,25 @@ namespace GraphicsCommon
         public int nVertices { get; set; }
         public int nEdges { get; set; }
         public int nFaces { get; set; }
+        public Canvas MainStage { get; set; }
 
-        public Model(string filePath)
+        //public Model(string filePath, Canvas mainStage) : this(filePath, mainStage)
+        //{
+            
+        //}
+
+        //public Model(string filePath, Canvas mainStage) : this(filePath)
+        //{
+        //     MainStage = mainStage;
+        //}
+
+        public Model(string filePath, Canvas mainStage, double[] initialCoordinates = null)
         {
+            if (initialCoordinates == null)
+            {
+                initialCoordinates = new double[] { 0, 0, 0 };
+            }
+
             var jsonString = File.ReadAllText(filePath);
             var modelData = JsonSerializer.Deserialize<ModelData>(jsonString);
 
@@ -76,8 +92,27 @@ namespace GraphicsCommon
                 }
             }
 
+            this.Translate(initialCoordinates);
+
 
         }
+
+        public static Model CreateModel(string filePath, double[] initialCoordinates, Canvas mainStage)
+        {
+            var model = new Model("filePath", mainStage);
+            model.Translate(initialCoordinates);
+
+            return model;
+        }
+
+        //public static Model CreateModel(string filePath, double[] initialCoordinates, double[] scale)
+        //{
+        //    Model model = new Model("filePath");
+        //    model.Translate(initialCoordinates);
+        //    model.Scale(scale);
+
+        //    return model;
+        //}
 
         public Model(int nvertices, int nedges, int nfaces)
         {
@@ -119,10 +154,11 @@ namespace GraphicsCommon
             LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
-        public void RotateZ(double radians)
+        public void RotateZ(double radians, bool moveToOrigin = true)
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
+            if (moveToOrigin) 
+                LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < nVertices; i++)
             {
                 var foo = LinearAlgebra.RotateAroundZ(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
@@ -131,16 +167,20 @@ namespace GraphicsCommon
                 Vertices[i, 1] = foo[1];
                 Vertices[i, 2] = foo[2];
             }
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+            if (moveToOrigin) 
+                LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
         public void Scale(double[] scalars)
         { 
+            // move model to origin
             var centroid = LinearAlgebra.CalculateCentroid(this.Vertices);
             LinearAlgebra.TranslateVertices(this.Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
 
+            // model scaled
             LinearAlgebra.ScaleVertices(this.Vertices, new double[] { scalars[0], scalars[1], scalars[2] });
 
+            // return to original position
             LinearAlgebra.TranslateVertices(this.Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 

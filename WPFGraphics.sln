@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionBlindness", "MotionBlindness\MotionBlindness.csproj", "{C336EB16-E8AD-485A-A679-6531385E9137}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4DCEF607-2A3E-40B9-94BF-8547CE40CFCD} = {4DCEF607-2A3E-40B9-94BF-8547CE40CFCD}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsCommon", "Common\GraphicsCommon.csproj", "{4DCEF607-2A3E-40B9-94BF-8547CE40CFCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelRotate", "ModelRotate\ModelRotate.csproj", "{9B0F7D5F-CECD-427D-B1C4-7632AEB546C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelRender", "ModelRotate\ModelRender.csproj", "{9B0F7D5F-CECD-427D-B1C4-7632AEB546C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoothy", "Smoothy\Smoothy.csproj", "{E243C5A2-8E94-4E97-81A6-C5BD0590B4AE}"
 EndProject
