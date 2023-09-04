@@ -26,12 +26,9 @@ namespace ModelRotate
         Canvas gp = null;
         bool ready = false;
 
-        // Flag for allowing sliders, etc., to influence display. 
         public MainWindow()
         {
             InitializeComponent();
-            //InitializeCommands();
-            // Now add some graphical items in the main Canvas, whose name is "GraphPaper"
             gp = this.FindName("Paper") as Canvas;
 
 
