@@ -93,7 +93,7 @@ namespace GraphicsCommon
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < nVertices; i++)
             {
                 var foo = LinearAlgebra.RotateAroundX(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
 
@@ -108,7 +108,7 @@ namespace GraphicsCommon
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < nVertices; i++)
             {
                 var foo = LinearAlgebra.RotateAroundY(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
 
@@ -123,7 +123,7 @@ namespace GraphicsCommon
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < nVertices; i++)
             {
                 var foo = LinearAlgebra.RotateAroundZ(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
 

@@ -48,6 +48,7 @@ namespace ModelRotate
 
             cubeModel.Scale(new double[] { 17, 17, 17 });
             plusModel.Translate(new double[] { 0, 0, 3 });
+            plusModel.Scale(new double[] { 1,1,0 });
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
@@ -58,13 +59,14 @@ namespace ModelRotate
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
                 gp.Children.Clear();
+                gp.Background = Brushes.Blue;
                 cubeModel.RotateY((5 * Math.PI) / 180);
                 //cubeModel.RotateZ((5 * Math.PI) / 180);
-                //plusModel.RotateY((5 * Math.PI) / 180);
                 plusModel.RotateZ((5 * Math.PI) / 180);
+                //plusModel.RotateZ((5 * Math.PI) / 180);
                 //cubeModel.RotateX((5 * Math.PI) / 180);
                 //cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
-                plusModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+                plusModel.DrawFaces(Brushes.Red, gp, Eye);
 
 
 
