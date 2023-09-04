@@ -58,9 +58,9 @@ namespace ModelRotate
                 blue = ColorHelper.IncrementRgbByte(blue, (byte)16, ref blueIncrease);
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
-                //gp.Children.Clear();
-                cubeModel.RotateY();
-                cubeModel.RotateZ();
+                gp.Children.Clear();
+                cubeModel.RotateY((5 * Math.PI) / 180);
+                cubeModel.RotateZ((5 * Math.PI) / 180);
                 cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
 
 

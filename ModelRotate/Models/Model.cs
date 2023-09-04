@@ -72,13 +72,13 @@ namespace GraphicsCommon
             nFaces = nfaces;
         }
 
-        public void RotateY()
+        public void RotateY(double radians)
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < 8; i++)
             {
-                var foo = LinearAlgebra.RotateAroundY(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, (5 * Math.PI) / 180);
+                var foo = LinearAlgebra.RotateAroundY(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
 
                 Vertices[i, 0] = foo[0];
                 Vertices[i, 1] = foo[1];
@@ -87,13 +87,13 @@ namespace GraphicsCommon
             LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
-        public void RotateZ()
+        public void RotateZ(double radians)
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < 8; i++)
             {
-                var foo = LinearAlgebra.RotateAroundZ(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, (5 * Math.PI) / 180);
+                var foo = LinearAlgebra.RotateAroundZ(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
 
                 Vertices[i, 0] = foo[0];
                 Vertices[i, 1] = foo[1];
