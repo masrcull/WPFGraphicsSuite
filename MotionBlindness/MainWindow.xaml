@@ -5,47 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MotionBlindness"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Topmost="True"
+        Title="MainWindow" Height="800" Width="1050">
     <Grid Background="Black">
-        <StackPanel Background="Beige" HorizontalAlignment="Left" Width="200">
-            <Label Content="Distance Between" HorizontalContentAlignment="Center"/>
 
-            <Slider Width="Auto" Margin="5,0,5,20"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Background="#424242" HorizontalAlignment="Left" Width="230">
+            <Label Foreground="White" Content="Grid Settings" HorizontalContentAlignment="Center" FontSize="16"/>
+            <Label Foreground="White" Content="Distance Between" HorizontalContentAlignment="Left" FontSize="12"/>
+            <Slider Width="Auto" Margin="5,0,5,5"
                     x:Name="distanceSlider" 
                     Minimum="1.0" 
                     Maximum="1.5" 
                     Value="1.1" 
                     TickFrequency="0.1" 
                     IsSnapToTickEnabled="True" ValueChanged="distanceSlider_ValueChanged"/>
-            <Label Content="Rotation Speed" HorizontalContentAlignment="Center"/>
+            
+            <Label Foreground="White" Content="Rotation Speed" HorizontalContentAlignment="Left" FontSize="12"/>
             <Slider Width="Auto" Margin="5,0,5,20"
                 x:Name="speedSlider" 
-                Minimum="1.0" 
-                Maximum="1.5" 
-                Value="1.1" 
-                TickFrequency="0.1" 
-                IsSnapToTickEnabled="True" ValueChanged="distanceSlider_ValueChanged"/>
-            <Label Content="Circle Settings" HorizontalContentAlignment="Center"/>
-            <Grid Height="120">
+                Minimum="1" 
+                Maximum="10" 
+                Value="1" 
+                TickFrequency="1" 
+                IsSnapToTickEnabled="True" ValueChanged="speedSlider_ValueChanged"/>
+            <Label Foreground="White" Content="Circle Settings" HorizontalContentAlignment="Center" FontSize="16"/>
+            <Label Foreground="White" Content="Circle Diameter" HorizontalContentAlignment="Left" FontSize="12"/>
+            <Slider Width="Auto" Margin="5,0,5,20"
+                    x:Name="diameterSlider" 
+                    Minimum="10" 
+                    Maximum="100" 
+                    Value="20" 
+                    TickFrequency="1" 
+                    IsSnapToTickEnabled="True" ValueChanged="diameterSlider_ValueChanged"/>
+            <Grid Height="300">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="210" />
                 </Grid.ColumnDefinitions>
-                <Label Content="R" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18"/>
-                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,5,3,95"/>
-                <Label Content="G" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Margin="0,22,0,0"/>
-                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,26,3,75"/>
-                <Label Content="B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Margin="0,44,0,0"/>
-                <TextBox Width="30" Text="255" VerticalContentAlignment="Top" Margin="17,48,3,53"/>
-                
-                <Label Grid.Column="1" Content="Diameter" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top"/>
+                <Label Foreground="Red" Content="R" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20"/>
+
+                <Label Foreground="Green" Content="G" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Margin="0,29,0,0"/>
+
+                <Label Foreground="DodgerBlue" Content="B" HorizontalAlignment="Center" VerticalAlignment="Top" Width="20" Margin="0,59,0,0"
+                       />
+                <Slider x:Name="RedSlider" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,4,10,0"  Width="180" ValueChanged="ColorSlider_ValueChanged"
+                        Value="255"
+                        Minimum="0"
+                        Maximum="255"
+                        TickFrequency="1"
+                        IsSnapToTickEnabled="True"/>
+                <Slider x:Name="GreenSlider" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,34,10,0" Width="180" ValueChanged="ColorSlider_ValueChanged"
+                        Value="242"
+                        Minimum="0"
+                        Maximum="255"
+                        TickFrequency="1"
+                        IsSnapToTickEnabled="True"/>
+                <Slider x:Name="BlueSlider" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,64,10,0" Width="180" ValueChanged="ColorSlider_ValueChanged"
+                        Value="0"
+                        Minimum="0"
+                        Maximum="255"
+                        TickFrequency="1"
+                        IsSnapToTickEnabled="True"/>
+
 
 
             </Grid>
 
         </StackPanel>
 
-        <Canvas Name="MainStage" HorizontalAlignment="Right"  Width="800" Height="800" Margin="0,0,50,0">
+        <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Left"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
             <Canvas.LayoutTransform>
                 <ScaleTransform ScaleX="-1" ScaleY="-1" CenterX="400" CenterY="400"/>
             </Canvas.LayoutTransform>

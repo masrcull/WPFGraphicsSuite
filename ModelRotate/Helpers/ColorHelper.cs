@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace GraphicsCommon
 {
-    internal class ColorHelper
+    public class ColorHelper
     {
         public static SolidColorBrush CreateColorBrush(byte red, byte green, byte blue)
         {

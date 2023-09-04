@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 
 namespace GraphicsCommon
 {
-    internal class ShapeHelper
+    public class ShapeHelper
     {
         public static void DrawPolygon(Point[] points, SolidColorBrush color, Canvas gp)
         {
@@ -28,5 +28,26 @@ namespace GraphicsCommon
 
             gp.Children.Add(polygon);
         }
+
+        public static Ellipse CreateEllipse(double width, double height, double xPosition, double yPosition, SolidColorBrush fillColor)
+        {
+            var ellipse = new Ellipse();
+
+            ellipse.Width = width;   // example width
+            ellipse.Height = height;  // example height
+            ellipse.Fill = fillColor; // example fill color
+
+            // Set its position on the Canvas
+            Canvas.SetLeft(ellipse, xPosition); // X position
+            Canvas.SetTop(ellipse, yPosition);  // Y position
+
+            return ellipse;
+        }
+
+        public static Ellipse CreateCircle(double diameter, double xPosition, double yPosition, SolidColorBrush fillColor)
+        {
+            return CreateEllipse(diameter, diameter, xPosition, yPosition, fillColor);
+        }
+
     }
 }
