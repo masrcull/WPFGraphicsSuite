@@ -48,7 +48,7 @@ namespace ModelRotate
             byte green = 128;
             byte blue = 200;
 
-            cubeModel.Vertices = ScaleModel(cubeModel.Vertices, new double[] {10, 10, 10 });
+            cubeModel.Vertices = ScaleModel(cubeModel.Vertices, new double[] {17, 17, 17 });
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
@@ -91,10 +91,11 @@ namespace ModelRotate
 
 
                 gp.Children.Clear();
-                cubeModel.Vertices = RotateCube(cubeModel.Vertices);
+                cubeModel.Vertices = RotateModelAroundY(cubeModel.Vertices);
+                cubeModel.Vertices = RotateModelAroundZ(cubeModel.Vertices);
 
 
-                
+
                 DrawFaces(gp, cubeModel, Eye, CreateColorBrush(red, green, blue));
             };
             timer.Start();
@@ -155,8 +156,8 @@ namespace ModelRotate
                         //gp.Children.Add(new Line { X1 = pictureVertices[model.Faces[i, j]].X, Y1 = pictureVertices[model.Faces[i, j]].Y, X2 = pictureVertices[model.Faces[i, j + 1]].X, Y2 = pictureVertices[model.Faces[i, j + 1]].Y, Stroke = new SolidColorBrush(Colors.Black) });
                         if (j == faceVertices.Length - 2)
                         {
-                           // gp.Children.Add(new Line(pictureVertices[model.Faces[i, 0]], pictureVertices[model.Faces[i, faceVertices.Length - 1]]));
-                            gp.Children.Add(new Line { X1 = pictureVertices[model.Faces[i, 0]].X, Y1 = pictureVertices[model.Faces[i, 0]].Y, X2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Y2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Stroke = new SolidColorBrush(Colors.Black) });
+                            
+                            //gp.Children.Add(new Line { X1 = pictureVertices[model.Faces[i, 0]].X, Y1 = pictureVertices[model.Faces[i, 0]].Y, X2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Y2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Stroke = new SolidColorBrush(Colors.Black) });
                             points[j + 1] = pictureVertices[model.Faces[i, faceVertices.Length - 1]];
                         }
 
@@ -202,7 +203,7 @@ namespace ModelRotate
             return new SolidColorBrush(specifiedColor);
         }
 
-        public double[,] RotateCube(double[,] cube)
+        public double[,] RotateModelAroundY(double[,] cube)
         {
             var vtable = cube;
             var centroid = LinearAlgebra.CalculateCentroid(vtable);
@@ -210,6 +211,23 @@ namespace ModelRotate
             for (int i = 0; i < 8; i++)
             {
                 var foo = LinearAlgebra.RotateAroundY(new double[] { vtable[i, 0], vtable[i, 1], vtable[i, 2] }, (5 * Math.PI) / 180);
+
+                vtable[i, 0] = foo[0];
+                vtable[i, 1] = foo[1];
+                vtable[i, 2] = foo[2];
+            }
+            LinearAlgebra.TranslateVertices(vtable, new double[] { centroid[0], centroid[1], centroid[2] });
+            return vtable;
+        }
+
+        public double[,] RotateModelAroundZ(double[,] cube)
+        {
+            var vtable = cube;
+            var centroid = LinearAlgebra.CalculateCentroid(vtable);
+            LinearAlgebra.TranslateVertices(vtable, new double[] { -centroid[0], -centroid[1], -centroid[2] });
+            for (int i = 0; i < 8; i++)
+            {
+                var foo = LinearAlgebra.RotateAroundZ(new double[] { vtable[i, 0], vtable[i, 1], vtable[i, 2] }, (5 * Math.PI) / 180);
 
                 vtable[i, 0] = foo[0];
                 vtable[i, 1] = foo[1];
