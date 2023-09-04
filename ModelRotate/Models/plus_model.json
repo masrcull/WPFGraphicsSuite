@@ -1,7 +1,7 @@
 {
-  "nVertices": 8,
+  "nVertices": 24,
   "nEdges": 12,
-  "nFaces": 6,
+  "nFaces": 13,
 
   "vertices": [
     [ -0.125, -0.5, 0.25 ],

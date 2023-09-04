@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModelRotate"
         mc:Ignorable="d"
-        Topmost="True"
+        
         Title="MainWindow" Height="800" Width="800">
     <Grid Background="Black">
         <Canvas x:Name="Paper" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent"/>

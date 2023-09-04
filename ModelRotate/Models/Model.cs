@@ -16,6 +16,8 @@ namespace GraphicsCommon
     {
         public double[,] Vertices { get; set; }
         public int[,] edges { get; set; }
+        //public List<int>[] faces2 { get; set; }
+        public int[][] faces2 { get; set; }
         public int[,] faces { get; set; }
         public int nVertices { get; set; }
         public int nEdges { get; set; }
@@ -32,6 +34,11 @@ namespace GraphicsCommon
             Vertices = new double[this.nVertices, 3];
             edges = new int[this.nEdges, 2];
             faces = new int[this.nFaces, 4];
+
+            faces2 = new int[nFaces][];
+
+            //faces2 = new List<int>[this.nFaces];
+            
 
             for (int i = 0; i < modelData.nVertices; i++)
             {
@@ -51,11 +58,21 @@ namespace GraphicsCommon
 
 
 
+            //for (int i = 0; i < modelData.faces.Length; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //        this.faces[i, j] = modelData.faces[i][j];
+            //    }
+            //}
+
             for (int i = 0; i < modelData.faces.Length; i++)
             {
-                for (int j = 0; j < 4; j++)
+                //this.faces2[i] = new List<int>();
+                this.faces2[i] = new int[modelData.faces[i].Length];
+                for (int j = 0; j < modelData.faces[i].Length; j++)
                 {
-                    this.faces[i, j] = modelData.faces[i][j];
+                    this.faces2[i][j] = modelData.faces[i][j];
                 }
             }
 
@@ -127,6 +144,11 @@ namespace GraphicsCommon
             LinearAlgebra.TranslateVertices(this.Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
+        public void Translate(double[] coordinates)
+        {
+            LinearAlgebra.TranslateVertices(this.Vertices, coordinates);
+        }
+
         public void DrawFaces(SolidColorBrush color, Canvas gp, double[] eye )
         {
 
@@ -156,11 +178,11 @@ namespace GraphicsCommon
             for (int i = 0; i < this.nFaces; i++)
             {
 
-                int[] faceVertices = new int[this.faces.GetLength(1)];
+                int[] faceVertices = new int[this.faces2[i].Length];
 
-                for (int j = 0; j < this.faces.GetLength(1); j++)
+                for (int j = 0; j < this.faces2[i].Length; j++)
                 {
-                    faceVertices[j] = this.faces[i, j];
+                    faceVertices[j] = this.faces2[i][j];
                 }
 
 
@@ -170,13 +192,13 @@ namespace GraphicsCommon
                     var points = new Point[faceVertices.Length];
                     for (int j = 0; j < faceVertices.Length - 1; j++)
                     {
-                        points[j] = pictureVertices[this.faces[i, j]];
+                        points[j] = pictureVertices[this.faces2[i][j]];
                         //gp.Children.Add(new Line { X1 = pictureVertices[model.Faces[i, j]].X, Y1 = pictureVertices[model.Faces[i, j]].Y, X2 = pictureVertices[model.Faces[i, j + 1]].X, Y2 = pictureVertices[model.Faces[i, j + 1]].Y, Stroke = new SolidColorBrush(Colors.Black) });
                         if (j == faceVertices.Length - 2)
                         {
 
                             //gp.Children.Add(new Line { X1 = pictureVertices[model.Faces[i, 0]].X, Y1 = pictureVertices[model.Faces[i, 0]].Y, X2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Y2 = pictureVertices[model.Faces[i, faceVertices.Length - 1]].X, Stroke = new SolidColorBrush(Colors.Black) });
-                            points[j + 1] = pictureVertices[this.faces[i, faceVertices.Length - 1]];
+                            points[j + 1] = pictureVertices[this.faces2[i][ faceVertices.Length - 1]];
                         }
 
                     }
