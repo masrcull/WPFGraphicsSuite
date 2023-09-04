@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Topmost="True"
         Title="MainWindow" Height="800" Width="800">
-    <Grid>
-        <Canvas x:Name="Paper" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <Grid Background="Black">
+        <Canvas x:Name="Paper" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent"/>
     </Grid>
 </Window>

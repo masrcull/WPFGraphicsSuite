@@ -63,6 +63,22 @@
             return Multiply(rotationMatrix, vertex);
         }
 
+        public static double[] RotateAroundZ(double[] vertex, double angle)
+        {
+            if (vertex.Length != 3)
+            {
+                throw new ArgumentException("Invalid vertex dimensions.");
+            }
+
+            // Rotation matrix for Z axis
+            double[][] rotationMatrix = new double[3][];
+            rotationMatrix[0] = new double[] { Math.Cos(angle), -Math.Sin(angle), 0 };
+            rotationMatrix[1] = new double[] { Math.Sin(angle), Math.Cos(angle), 0 };
+            rotationMatrix[2] = new double[] { 0, 0, 1 };
+
+            return Multiply(rotationMatrix, vertex);
+        }
+
         public static double[] CrossProduct(double[] vec1, double[] vec2)
         {
             if (vec1.Length != 3 || vec2.Length != 3)
@@ -143,21 +159,7 @@
             Thread.Sleep(1000);
         }
 
-        public static double[] RotateAroundZ(double[] vertex, double angle)
-        {
-            if (vertex.Length != 3)
-            {
-                throw new ArgumentException("Invalid vertex dimensions.");
-            }
-
-            // Rotation matrix for Z axis
-            double[][] rotationMatrix = new double[3][];
-            rotationMatrix[0] = new double[] { Math.Cos(angle), -Math.Sin(angle), 0 };
-            rotationMatrix[1] = new double[] { Math.Sin(angle), Math.Cos(angle), 0 };
-            rotationMatrix[2] = new double[] { 0, 0, 1 };
-
-            return Multiply(rotationMatrix, vertex);
-        }
+        
 
 
     }
