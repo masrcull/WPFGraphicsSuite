@@ -1,4 +1,6 @@
-﻿namespace GraphicsCommon
+﻿using System.Numerics;
+
+namespace GraphicsCommon
 {
     public class LinearAlgebra
     {
@@ -46,6 +48,21 @@
             return result;
         }
 
+        public static double[] RotateAroundX(double[] vertex, double angle)
+        {
+            if (vertex.Length != 3)
+            {
+                throw new ArgumentException("Invalid vertex dimensions.");
+            }
+
+            // Rotation matrix for X axis
+            double[][] rotationMatrix = new double[3][];
+            rotationMatrix[0] = new double[] { 1, 0, 0 };
+            rotationMatrix[1] = new double[] { 0, Math.Cos(angle), -Math.Sin(angle) };
+            rotationMatrix[2] = new double[] { 0, Math.Sin(angle), Math.Cos(angle) };
+
+            return Multiply(rotationMatrix, vertex);
+        }
 
         public static double[] RotateAroundY(double[] vertex, double angle)
         {

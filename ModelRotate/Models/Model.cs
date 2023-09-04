@@ -72,6 +72,21 @@ namespace GraphicsCommon
             nFaces = nfaces;
         }
 
+        public void RotateX(double radians)
+        {
+            var centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
+            for (int i = 0; i < 8; i++)
+            {
+                var foo = LinearAlgebra.RotateAroundX(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
+
+                Vertices[i, 0] = foo[0];
+                Vertices[i, 1] = foo[1];
+                Vertices[i, 2] = foo[2];
+            }
+            LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+        }
+
         public void RotateY(double radians)
         {
             var centroid = LinearAlgebra.CalculateCentroid(Vertices);
@@ -207,59 +222,6 @@ namespace GraphicsCommon
         public int nVertices { get; set; }
         public int nEdges { get; set; }
         public int nFaces { get; set; }
-
-        // You can add other properties like Textures, Normals, Metadata, etc. as needed.
-
-        public static Model ReadCoordinatesFromJson(string filePath)
-        {
-            var jsonString = File.ReadAllText(filePath);
-            var modelData = JsonSerializer.Deserialize<ModelData>(jsonString);
-
-            var model = new Model(modelData.nVertices,
-                                        modelData.nEdges,
-                                        modelData.nFaces);
-
-
-
-
-            for (int i = 0; i < modelData.nVertices; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    model.Vertices[i, j] = modelData.vertices[i][j];
-                }
-            }
-
-
-
-            for (int i = 0; i < modelData.edges.Length; i++)
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    model.edges[i, j] = modelData.edges[i][j];
-                }
-            }
-
-
-
-            for (int i = 0; i < modelData.faces.Length; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    model.faces[i, j] = modelData.faces[i][j];
-                }
-            }
-
-            model.nVertices = modelData.nVertices;
-            model.nEdges = modelData.nEdges;
-            model.nFaces = modelData.nFaces;
-
-
-
-            return model;
-        }
-
-
 
     }
 }

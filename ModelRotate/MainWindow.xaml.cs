@@ -33,6 +33,7 @@ namespace ModelRotate
 
 
             var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json");
+            //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
             double[] Eye = new double[3]
             { 0, 0, 0 };
@@ -56,9 +57,12 @@ namespace ModelRotate
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
                 gp.Children.Clear();
-                cubeModel.RotateY((5 * Math.PI) / 180);
+                //cubeModel.RotateY((5 * Math.PI) / 180);
                 cubeModel.RotateZ((5 * Math.PI) / 180);
+                //plusModel.RotateY((5 * Math.PI) / 180);
+                //cubeModel.RotateX((5 * Math.PI) / 180);
                 cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+                //plusModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
 
 
 
