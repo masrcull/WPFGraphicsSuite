@@ -21,16 +21,26 @@ namespace SpacialFreq
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Canvas MainStage;
+        public Canvas mainStage;
 
         public MainWindow()
         {
             InitializeComponent();
-            MainStage = FindName("MainStage") as Canvas;
+            mainStage = FindName("MainStage") as Canvas;
             var Eye = new double[] { 0, 0, 0 };
 
-            var cubeModel = new Model("", MainStage, new double[] { 0, 0, 13 });
-            //cubeModel.DrawFaces''
+            var cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
+            cubeModel.Scale(new double[] { 35, 1, 0 });
+            cubeModel.Translate(new double[] { 0, 16.4, 0 });
+
+            var greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
+            greyCube.Scale(new double[] { 35, 17, 0 });
+            
+            greyCube.Translate(new double[] { 0, -9, 0 });
+
+            greyCube.DrawFaces(Brushes.Gray, mainStage, Eye);
+            cubeModel.DrawFaces(Brushes.White, mainStage, Eye);
+            
 
         }
     }

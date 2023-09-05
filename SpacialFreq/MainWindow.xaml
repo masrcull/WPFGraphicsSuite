@@ -15,6 +15,11 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Background="#424242" HorizontalAlignment="Left" Width="230">
             </StackPanel>
+            <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Left"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
+                <Canvas.LayoutTransform>
+                    <ScaleTransform ScaleX="-1" ScaleY="-1" CenterX="400" CenterY="400"/>
+                </Canvas.LayoutTransform>
+            </Canvas>
         </Grid>
     </Grid>
 </Window>
