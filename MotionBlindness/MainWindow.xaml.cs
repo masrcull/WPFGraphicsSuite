@@ -58,11 +58,6 @@ namespace MotionBlindness
             mainStage.Children.Add(circles[0]);
 
 
-            
-
-
-
-
             var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", mainStage, new double[] { plusRenderMin, plusRenderMax, 13.0 });
             plusModel.Scale(new double[] { 0, 0, 1 });
             //plusModel.Scale(new double[] {1,1,0});

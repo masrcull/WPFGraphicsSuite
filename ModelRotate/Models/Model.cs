@@ -262,11 +262,6 @@ namespace GraphicsCommon
 
             var crossProduct = LinearAlgebra.CrossProduct(v, w);
 
-
-
-            var foo = LinearAlgebra.DotProduct(crossProduct, LinearAlgebra.SubtractVectors(p0, Eye));
-            var BAR = (LinearAlgebra.DotProduct(crossProduct, Eye) < 0);
-
             return (LinearAlgebra.DotProduct(crossProduct, LinearAlgebra.SubtractVectors(p0, Eye)) < 0);
         }
 
