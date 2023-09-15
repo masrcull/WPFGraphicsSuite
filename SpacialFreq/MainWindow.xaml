@@ -14,6 +14,36 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Background="#424242" HorizontalAlignment="Left" Width="230">
+                <Label Foreground="White" Content="Line Multiplier" HorizontalContentAlignment="Left" FontSize="16"/>
+                <Slider Width="230"
+                    x:Name="lineAmountSlider"
+                    IsDirectionReversed="True"
+                    Minimum=".1" 
+                    Maximum="1" 
+                    Value="0.5" 
+                    TickFrequency=".1" 
+                    IsSnapToTickEnabled="True" RenderTransformOrigin="0.5,0.5" ValueChanged="lineAmountSlider_ValueChanged">
+                    <Slider.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-180.062"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Slider.RenderTransform>
+                </Slider>
+                <Grid>
+                    <Label Width="115" Content="Line Frequency: " HorizontalAlignment="Left"/>
+                    <Label Width="140" x:Name="lblFrequency" Content=".5" HorizontalAlignment="Left" Margin="90,0,0,0"/>
+                </Grid>
+                <Label Foreground="White" Content="Gray Scale" HorizontalContentAlignment="Left" FontSize="16"/>
+                <Slider Width="Auto"
+                    x:Name="grayScaleSlider" 
+                    Minimum="0" 
+                    Maximum="255" 
+                    Value="127" 
+                    TickFrequency=".1" 
+                    IsSnapToTickEnabled="True" ValueChanged="grayScaleSlider_ValueChanged"/>
             </StackPanel>
             <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Left"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
                 <Canvas.LayoutTransform>

@@ -6,16 +6,20 @@ namespace GraphicsCommon
     {
         public static double[] SubtractVectors(double[] vector1, double[] vector2)
         {
-            if (vector1.Length != vector2.Length)
-            {
-                throw new ArgumentException("Vectors must have the same dimension.");
-            }
-
             double[] result = new double[vector1.Length];
-
-            for (int i = 0; i < vector1.Length; i++)
+            if (vector1 != null && vector2 != null)
             {
-                result[i] = vector1[i] - vector2[i];
+                if (vector1.Length != vector2.Length)
+                {
+                    throw new ArgumentException("Vectors must have the same dimension.");
+                }
+
+                result = new double[vector1.Length];
+
+                for (int i = 0; i < vector1.Length; i++)
+                {
+                    result[i] = vector1[i] - vector2[i];
+                }
             }
 
             return result;
