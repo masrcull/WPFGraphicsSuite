@@ -23,7 +23,12 @@ namespace GraphicsCommon
         public int nEdges { get; set; }
         public int nFaces { get; set; }
         public Canvas MainStage { get; set; }
-
+        public double[] Centroid {
+            get 
+            {
+                return LinearAlgebra.CalculateCentroid(this.Vertices);
+            }
+        }
         //public Model(string filePath, Canvas mainStage) : this(filePath, mainStage)
         //{
             
@@ -187,6 +192,11 @@ namespace GraphicsCommon
         public void Translate(double[] coordinates)
         {
             LinearAlgebra.TranslateVertices(this.Vertices, coordinates);
+        }
+
+        public void Translate(double x, double y, double z)
+        {
+            Translate(new double[] { x, y, z });
         }
 
         public void DrawFaces(SolidColorBrush color, Canvas gp, double[] eye )

@@ -28,9 +28,10 @@ namespace SpacialFreq
             InitializeComponent();
             mainStage = FindName("MainStage") as Canvas;
             var Eye = new double[] { 0, 0, 0 };
+            double lineScalar = .5;
 
             var cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
-            cubeModel.Scale(new double[] { 35, 1, 0 });
+            cubeModel.Scale(new double[] { 35, lineScalar, 0 });
             cubeModel.Translate(new double[] { 0, 16.4, 0 });
 
             var greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
@@ -40,7 +41,19 @@ namespace SpacialFreq
 
             greyCube.DrawFaces(Brushes.Gray, mainStage, Eye);
             cubeModel.DrawFaces(Brushes.White, mainStage, Eye);
-            
+            cubeModel.Translate(0, (-1 * 2 * lineScalar), 0);
+            cubeModel.DrawFaces(Brushes.White, MainStage, Eye);
+
+
+
+            while (cubeModel.Centroid[1] > 0)
+            {
+                cubeModel.Translate(0, (-1 * 2 * lineScalar), 0);
+                cubeModel.DrawFaces(Brushes.White, MainStage, Eye);
+            }
+
+            var foo = LinearAlgebra.CalculateCentroid(cubeModel.Vertices);
+            Console.WriteLine("fuck");
 
         }
     }
