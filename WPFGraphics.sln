@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelRender", "ModelRotate\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoothy", "Smoothy\Smoothy.csproj", "{E243C5A2-8E94-4E97-81A6-C5BD0590B4AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpacialFreq", "SpacialFreq\SpacialFreq.csproj", "{F9D77CD3-47F5-43D5-8638-9F5F2A89BA3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpacialFreq", "SpacialFreq\SpacialFreq.csproj", "{F9D77CD3-47F5-43D5-8638-9F5F2A89BA3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,9 +9,23 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.IO;
+using ModelRender.Helpers;
+using System.Windows.Shapes;
+using Microsoft.VisualBasic;
 
 namespace GraphicsCommon
 {
+    public class ExportModel
+    {
+        public double[][] vertices { get; set; }
+        public int[][] edges { get; set; }
+        public int[][] faces { get; set; }
+        public int nVertices { get; set; }
+        public int nEdges { get; set; }
+        public int nFaces { get; set; }
+    }
+
+
     public class Model
     {
         public double[,] Vertices { get; set; }
@@ -127,6 +141,65 @@ namespace GraphicsCommon
             nVertices = nvertices;
             nEdges = nedges;
             nFaces = nfaces;
+        }
+
+        public void ExportModel(string filePath)
+        {
+            var jagged = ArrayHelper.ToJaggedArray(this.Vertices);
+
+            var exportModel = new ExportModel
+            {
+                nEdges = this.nEdges,
+                nFaces = this.nFaces,
+                nVertices = this.nVertices,
+                edges = ArrayHelper.ToJaggedArray(this.edges),
+                faces = this.faces2,
+                vertices = ArrayHelper.ToJaggedArray(this.Vertices)
+            };
+            var stringy = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
+            File.WriteAllText(filePath, stringy);
+        }
+
+        public static void ExportFuseModels(string filePath, List<Model> models)
+        {
+
+            var jsonModels = new string[models.Count];
+
+            var nvertices = models.Sum(x => x.nVertices);
+            var nedges = models.Sum(x => x.nEdges);
+            var nfaces = models.Sum(x => x.nFaces);
+
+            for(int i=0; i < models.Count; i++)
+            {
+                jsonModels[i] = JsonSerializer.Serialize(models[i]/*, new JsonSerializerOptions { WriteIndented = true }*/);
+            }
+
+            var mergeString = JSONHelper.MergeJsonObjects(jsonModels);
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
+            File.WriteAllText(filePath, mergeString);
+
+
+            //var fusedModel = new ExportModel()
+            //{
+            //    nVertices = nvertices,
+            //    nEdges = nedges,
+            //    nFaces = nfaces,
+            //    vertices = new double[nvertices][],
+            //    faces = new int[nfaces][],
+            //    edges = new int[nedges][],
+            //};
+
+            //fusedModel.nVertices = models.Sum(x => x.nVertices);
+            //int sum = models.Sum(x => x.nVertices);
+
+            //foreach (Model model in models)
+            //{
+            //    for(int i = 0; i < model.nVertices; i++)
+            //    {
+            //        //fusedModel.vertices += ArrayHelper.ToJaggedArray( model.Vertices);
+            //    }
+            //}
         }
 
         public void RotateX(double radians)
