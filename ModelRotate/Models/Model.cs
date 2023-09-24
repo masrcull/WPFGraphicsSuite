@@ -53,6 +53,11 @@ namespace GraphicsCommon
         //     MainStage = mainStage;
         //}
 
+        public Model()
+        {
+
+        }
+
         public Model(string filePath, Canvas mainStage, double[] initialCoordinates = null)
         {
             if (initialCoordinates == null)
@@ -143,19 +148,25 @@ namespace GraphicsCommon
             nFaces = nfaces;
         }
 
+        private static ExportModel ToExportModel(Model model)
+        {
+            var exportModel = new ExportModel
+            {
+                nEdges = model.nEdges,
+                nFaces = model.nFaces,
+                nVertices = model.nVertices,
+                edges = ArrayHelper.ToJaggedArray(model.edges),
+                faces = model.faces2,
+                vertices = ArrayHelper.ToJaggedArray(model.Vertices)
+            };
+            return exportModel;
+        }
+
         public void ExportModel(string filePath)
         {
             var jagged = ArrayHelper.ToJaggedArray(this.Vertices);
 
-            var exportModel = new ExportModel
-            {
-                nEdges = this.nEdges,
-                nFaces = this.nFaces,
-                nVertices = this.nVertices,
-                edges = ArrayHelper.ToJaggedArray(this.edges),
-                faces = this.faces2,
-                vertices = ArrayHelper.ToJaggedArray(this.Vertices)
-            };
+            var exportModel = ToExportModel(this);
             var stringy = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
             File.WriteAllText(filePath, stringy);
@@ -163,21 +174,72 @@ namespace GraphicsCommon
 
         public static void ExportFuseModels(string filePath, List<Model> models)
         {
-
-            var jsonModels = new string[models.Count];
-
             var nvertices = models.Sum(x => x.nVertices);
             var nedges = models.Sum(x => x.nEdges);
             var nfaces = models.Sum(x => x.nFaces);
 
+            var exportModels = new List<ExportModel>();
+            var exportModel = new ExportModel();
+
+            var vertList = new List<double[]>();
+            var edgeList = new List<int[]>();
+            var faceList = new List<int[]>();
+
+            exportModel.vertices = new double[nvertices][];
+            exportModel.faces = new int[nfaces][];
+            exportModel.edges = new int[nedges][];
+
+            exportModel.nVertices = nvertices;
+            exportModel.nEdges = nedges;
+            exportModel.nFaces = nfaces;
+
+            foreach (Model model in models)
+            {
+                var tempModel = Model.ToExportModel(model);
+                exportModels.Add(tempModel);
+                for(int i = 0; i < tempModel.nVertices; i++)
+                {
+                    vertList.Add(tempModel.vertices[i]);
+                }
+                for (int i = 0; i < tempModel.nEdges; i++)
+                {
+                    edgeList.Add(tempModel.edges[i]);
+                }
+                for (int i = 0; i < tempModel.nFaces; i++)
+                {
+                    faceList.Add(tempModel.faces[i]);
+                }
+            }
+
+            for(int i = 0; i<nvertices; i++)
+            {
+                exportModel.vertices[i] = vertList[i];
+            }
+            for (int i = 0; i < nedges; i++)
+            {
+                exportModel.edges[i] = edgeList[i];
+            }
+            for (int i = 0; i < nfaces; i++)
+            {
+                exportModel.faces[i] = faceList[i];
+            }
+
+
+            var jsonModels = new string[models.Count];
+            string jsonModel;
+
+            jsonModel = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
+
+            var newModel = new Model(nvertices, nedges, nfaces);
+
             for(int i=0; i < models.Count; i++)
             {
-                jsonModels[i] = JsonSerializer.Serialize(models[i]/*, new JsonSerializerOptions { WriteIndented = true }*/);
+                jsonModels[i] = JsonSerializer.Serialize(exportModels[i]/*, new JsonSerializerOptions { WriteIndented = true }*/);
             }
 
             var mergeString = JSONHelper.MergeJsonObjects(jsonModels);
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
-            File.WriteAllText(filePath, mergeString);
+            File.WriteAllText(filePath, jsonModel);
 
 
             //var fusedModel = new ExportModel()
@@ -188,7 +250,8 @@ namespace GraphicsCommon
             //    vertices = new double[nvertices][],
             //    faces = new int[nfaces][],
             //    edges = new int[nedges][],
-            //};
+            //};		nvertices	32	int
+
 
             //fusedModel.nVertices = models.Sum(x => x.nVertices);
             //int sum = models.Sum(x => x.nVertices);
@@ -202,9 +265,10 @@ namespace GraphicsCommon
             //}
         }
 
-        public void RotateX(double radians)
+        public void RotateX(double radians, double[] centroid = null)
         {
-            var centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            if(centroid == null)
+                centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < nVertices; i++)
             {
@@ -217,9 +281,10 @@ namespace GraphicsCommon
             LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
-        public void RotateY(double radians)
+        public void RotateY(double radians, double[] centroid = null)
         {
-            var centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            if (centroid == null)
+                centroid = LinearAlgebra.CalculateCentroid(Vertices);
             LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < nVertices; i++)
             {
@@ -232,9 +297,10 @@ namespace GraphicsCommon
             LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
-        public void RotateZ(double radians, bool moveToOrigin = true)
+        public void RotateZ(double radians, double[] centroid = null, bool moveToOrigin = true)
         {
-            var centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            if (centroid == null)
+                centroid = LinearAlgebra.CalculateCentroid(Vertices);
             if (moveToOrigin) 
                 LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
             for (int i = 0; i < nVertices; i++)

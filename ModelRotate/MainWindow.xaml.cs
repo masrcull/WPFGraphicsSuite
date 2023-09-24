@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using GraphicsCommon;
-
+using ModelRender.Models;
 
 namespace ModelRotate
 {
@@ -32,7 +32,9 @@ namespace ModelRotate
             gp = this.FindName("Paper") as Canvas;
 
 
-            var cubeModel = new Model("..\\..\\..\\Models\\plus_model.json", gp, new double[] { 0, 0, 13 });
+            //var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", gp, new double[] { 0, 0, 13 });
+            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", gp, new double[] { 0, 0, 13 });
+            var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", gp, new double[] { 3, 0, 13 });
             //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
             double[] Eye = new double[3]
@@ -46,13 +48,14 @@ namespace ModelRotate
             byte green = 128;
             byte blue = 200;
 
-            cubeModel.Scale(new double[] { 4,4,4 });
-            //plusModel.Translate(new double[] { 0, 0, 3 });
-            //plusModel.Scale(new double[] { 1,1,0 });
+            var models = new List<Model> { plusModel2, plusModel };
+            
+            //var fusedModel= new Model("C:\\ModelExports\\fused.json", gp, new double[] { 0, 0, 0 });
 
-            cubeModel.ExportModel("C:\\ModelExports\\CubeModel.json");
+            var mesh = new Mesh(models);
 
-            var cubeModel2 = new Model("C:\\ModelExports\\CubeModel.json", gp, new double[] { 0, 0, 0 });
+            //mesh.RotateX(20);
+            
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
@@ -65,13 +68,15 @@ namespace ModelRotate
                 gp.Children.Clear();
 
 
-                cubeModel2.RotateY((5 * Math.PI) / 180);
-                cubeModel2.RotateZ((5 * Math.PI) / 180);
+                mesh.RotateX((5 * Math.PI) / 180);
+                mesh.RotateZ((5 * Math.PI) / 180);
                 //plusModel.RotateZ((5 * Math.PI) / 180);
                 //plusModel.RotateZ((5 * Math.PI) / 180);
                 //cubeModel.RotateX((5 * Math.PI) / 180);
                 //cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
-                cubeModel2.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+                mesh.DrawMesh(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+                ShapeHelper.DrawCircle(1, new SolidColorBrush(Colors.Red), gp);
+                //plusModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
                 //plusModel.DrawFaces(Brushes.Red, gp, Eye);
 
 

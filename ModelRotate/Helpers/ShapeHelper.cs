@@ -29,6 +29,27 @@ namespace GraphicsCommon
             gp.Children.Add(polygon);
         }
 
+        public static void DrawCircle(double radius, SolidColorBrush color, Canvas gp)
+        {
+            DrawPolygon(GenerateCirclePoints(radius), color, gp);
+        }
+
+        public static Point[] GenerateCirclePoints(double radius)
+        {
+            int numPoints = (int)(radius * 2 * Math.PI); // Reasonable approximation for number of points
+            Point[] points = new Point[numPoints];
+
+            for (int i = 0; i < numPoints; i++)
+            {
+                double theta = 2 * Math.PI * i / numPoints;
+                points[i] = new Point(radius * Math.Cos(theta), -radius * Math.Sin(theta));
+            }
+
+            return points;
+        }
+
+
+
         public static Ellipse CreateEllipse(double width, double height, double xPosition, double yPosition, SolidColorBrush fillColor)
         {
             var ellipse = new Ellipse();
