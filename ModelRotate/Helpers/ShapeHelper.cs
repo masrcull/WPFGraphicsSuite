@@ -48,9 +48,9 @@ namespace GraphicsCommon
             return points;
         }
 
-        public static List<double[]> GenerateUnitCirclePoints(int numberOfPoints)
+        public static Point[] GenerateUnitCirclePoints(int numberOfPoints)
         {
-            List<double[]> points = new List<double[]>();
+            Point[] points = new Point[numberOfPoints];
 
             double angleIncrement = 2 * Math.PI / numberOfPoints;
 
@@ -59,9 +59,8 @@ namespace GraphicsCommon
                 double angle = i * angleIncrement;
                 double x = Math.Cos(angle);
                 double y = Math.Sin(angle);
-                double z = 0; // Since it's on the Z=0 plane
 
-                points.Add(new double[] { x, y, z });
+                points[i] = new Point(x, y);
             }
 
             return points;

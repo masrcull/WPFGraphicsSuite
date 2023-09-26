@@ -34,6 +34,7 @@ namespace ShadowTrajectory
 
             MainGrid.Children.Add(GCC);
 
+            var points = ShapeHelper.GenerateUnitCirclePoints(16);
 
             //var tableBottom = GCC.AddModel("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 15);
             //var tableSideRight = GCC.AddModel("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 15);
