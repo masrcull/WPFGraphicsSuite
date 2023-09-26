@@ -48,6 +48,24 @@ namespace GraphicsCommon
             return points;
         }
 
+        public static List<double[]> GenerateUnitCirclePoints(int numberOfPoints)
+        {
+            List<double[]> points = new List<double[]>();
+
+            double angleIncrement = 2 * Math.PI / numberOfPoints;
+
+            for (int i = 0; i < numberOfPoints; i++)
+            {
+                double angle = i * angleIncrement;
+                double x = Math.Cos(angle);
+                double y = Math.Sin(angle);
+                double z = 0; // Since it's on the Z=0 plane
+
+                points.Add(new double[] { x, y, z });
+            }
+
+            return points;
+        }
 
 
         public static Ellipse CreateEllipse(double width, double height, double xPosition, double yPosition, SolidColorBrush fillColor)

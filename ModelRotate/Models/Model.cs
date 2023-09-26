@@ -61,6 +61,8 @@ namespace GraphicsCommon
 
         }
 
+        public Model(string filePath, double X, double Y, double Z) : this(filePath, new double[] { X, Y, Z}) { }
+
         public Model(string filePath, double[] initialCoordinates = null)
         {
             if (initialCoordinates == null)

@@ -94,10 +94,19 @@ namespace ModelRender.Models
             return model;
         }
 
+        public Mesh AddModels(List<Model> models)
+        {
+            var mesh = new Mesh(models);
+            Meshes.Add(mesh);
+            return mesh;
+        }
+
         public void DrawMeshes()
         {
+            //Meshes.Models = Meshes.OrderByDescending(obj => obj.CalculateCentroid()[2]).ToList();
             foreach(var mesh in Meshes)
             {
+                mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid[2]).ToList();
                 mesh.DrawMesh(this);
             }
         }

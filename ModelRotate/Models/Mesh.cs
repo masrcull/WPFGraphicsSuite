@@ -13,6 +13,11 @@ namespace ModelRender.Models
     {
         public List<Model> Models;
 
+        private double[] _centroid
+        {
+            get { return CalculateCentroid(); }
+        }
+
         public Mesh(List<Model> models)
         {
             Models = models;
@@ -42,23 +47,26 @@ namespace ModelRender.Models
 
         public void RotateX(double radians)
         {
-            foreach(Model model in Models)
+            var initialCentroid = CalculateCentroid();
+            foreach (Model model in Models)
             {
-                model.RotateX(radians, this.CalculateCentroid());
+                model.RotateX(radians, initialCentroid);
             }
         }
         public void RotateY(double radians)
         {
+            var initialCentroid = CalculateCentroid();
             foreach (Model model in Models)
             {
-                model.RotateY(radians, this.CalculateCentroid());
+                model.RotateY(radians, initialCentroid);
             }
         }
         public void RotateZ(double radians)
         {
+            var initialCentroid = CalculateCentroid();
             foreach (Model model in Models)
             {
-                model.RotateZ(radians, this.CalculateCentroid());
+                model.RotateZ(radians, initialCentroid);
             }
         }
 
