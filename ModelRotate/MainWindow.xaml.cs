@@ -33,8 +33,8 @@ namespace ModelRotate
 
 
             //var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", gp, new double[] { 0, 0, 13 });
-            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", gp, new double[] { 0, 0, 13 });
-            var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", gp, new double[] { 3, 0, 13 });
+            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 0, 0, 13 });
+            var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 3, 0, 13 });
             //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
             double[] Eye = new double[3]
@@ -74,7 +74,9 @@ namespace ModelRotate
                 //plusModel.RotateZ((5 * Math.PI) / 180);
                 //cubeModel.RotateX((5 * Math.PI) / 180);
                 //cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
-                mesh.DrawMesh(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+
+                //mesh.DrawMesh(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+
                 ShapeHelper.DrawCircle(1, new SolidColorBrush(Colors.Red), gp);
                 //plusModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
                 //plusModel.DrawFaces(Brushes.Red, gp, Eye);

@@ -25,23 +25,54 @@ namespace ShadowTrajectory
         Canvas mainStage = null;
         double[] Eye = new double[] { 0, 0, 0 };
 
+        GraphicContextControl GCC = new GraphicContextControl();
+
         public MainWindow()
         {
             InitializeComponent();
-            mainStage = this.FindName("MainStage") as Canvas;
+            //mainStage = this.FindName("MainStage") as Canvas;
 
-            var tableBottom = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] {0,0,-15});
-            var tableSideRight = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, -15 });
+            MainGrid.Children.Add(GCC);
+
+
+            var tableBottom = GCC.AddModel("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, -15);
+            var tableSideRight = GCC.AddModel("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 0 - 15);
             tableSideRight.Scale(0.3, 2, 2.5);
             tableSideRight.Translate(-2.5, -1, 0);
             tableBottom.Scale(4.5, 0.3, 2.5);
             //tableBottom.RotateX(10);
             //tableSideRight.RotateX(10);
 
-            var mesh = new Mesh(new List<Model> { tableBottom, tableSideRight });
+            tableSideRight.color = new int[] { 0, 255, 0 };
 
-            tableSideRight.DrawFaces(new SolidColorBrush(Colors.Blue), mainStage, Eye);
-            tableBottom.DrawFaces(new SolidColorBrush(Colors.Red), mainStage, Eye);
+            tableSideRight.RotateX(10);
+            tableBottom.RotateX(10);
+
+            bool redIncrease = true;
+            bool greenIncrease = true;
+            bool blueIncrease = true;
+
+            byte red = 64;
+            byte green = 128;
+            byte blue = 200;
+
+            GCC.AddMethod(() =>
+            {
+                red = ColorHelper.IncrementRgbByte(red, (byte)4, ref redIncrease);
+                blue = ColorHelper.IncrementRgbByte(blue, (byte)16, ref blueIncrease);
+                green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
+
+                tableBottom.color = new int[] { red, green, blue };
+
+                tableBottom.RotateX(.1);
+            });
+
+            GCC.Start();
+
+            
+
+            //tableSideRight.DrawFaces(GCC);
+            //tableBottom.DrawFaces(GCC);
             
 
 

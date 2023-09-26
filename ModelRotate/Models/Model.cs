@@ -12,6 +12,7 @@ using System.IO;
 using ModelRender.Helpers;
 using System.Windows.Shapes;
 using Microsoft.VisualBasic;
+using ModelRender.Models;
 
 namespace GraphicsCommon
 {
@@ -23,6 +24,7 @@ namespace GraphicsCommon
         public int nVertices { get; set; }
         public int nEdges { get; set; }
         public int nFaces { get; set; }
+        public int[] color { get; set; }
     }
 
 
@@ -36,6 +38,7 @@ namespace GraphicsCommon
         public int nVertices { get; set; }
         public int nEdges { get; set; }
         public int nFaces { get; set; }
+        public int[] color { get; set; }
         public Canvas MainStage { get; set; }
         public double[] Centroid {
             get 
@@ -58,7 +61,7 @@ namespace GraphicsCommon
 
         }
 
-        public Model(string filePath, Canvas mainStage, double[] initialCoordinates = null)
+        public Model(string filePath, double[] initialCoordinates = null)
         {
             if (initialCoordinates == null)
             {
@@ -76,6 +79,8 @@ namespace GraphicsCommon
             faces = new int[this.nFaces, 4];
 
             faces2 = new int[nFaces][];
+
+            this.color = modelData.color;
 
             //faces2 = new List<int>[this.nFaces];
             
@@ -123,7 +128,7 @@ namespace GraphicsCommon
 
         public static Model CreateModel(string filePath, double[] initialCoordinates, Canvas mainStage)
         {
-            var model = new Model("filePath", mainStage);
+            var model = new Model("filePath");
             model.Translate(initialCoordinates);
 
             return model;
@@ -343,7 +348,7 @@ namespace GraphicsCommon
             Translate(new double[] { x, y, z });
         }
 
-        public void DrawFaces(SolidColorBrush color, Canvas gp, double[] eye )
+        public void DrawFaces(GraphicContextControl contextControl)
         {
 
 
@@ -355,7 +360,7 @@ namespace GraphicsCommon
             var foo = this.Vertices.Length;
 
             Point[] pictureVertices = new Point[this.Vertices.Length];
-            double scale = 800;
+            //double scale = 800;
             for (int i = 0; i < this.Vertices.Length / 3; i++)
             {
                 double x = this.Vertices[i, 0];
@@ -363,9 +368,9 @@ namespace GraphicsCommon
                 double z = this.Vertices[i, 2];
                 double xprime = x / z;
                 double yprime = y / z;
-                var foo2 = (1 - (xprime - xmin) / (xmax - xmin));
-                pictureVertices[i].X = scale * (1 - (xprime - xmin) / (xmax - xmin));
-                pictureVertices[i].Y = scale * (yprime - ymin) / (ymax - ymin); // x / z
+
+                pictureVertices[i].X = contextControl.Width * (1 - (xprime - xmin) / (xmax - xmin));
+                pictureVertices[i].Y = contextControl.Height * (yprime - ymin) / (ymax - ymin); 
 
             }
 
@@ -381,7 +386,7 @@ namespace GraphicsCommon
 
 
 
-                if (IsFaceVisible(faceVertices, this.Vertices, eye))
+                if (IsFaceVisible(faceVertices, this.Vertices, contextControl.Eye))
                 {
                     var points = new Point[faceVertices.Length];
                     for (int j = 0; j < faceVertices.Length - 1; j++)
@@ -396,7 +401,7 @@ namespace GraphicsCommon
                         }
 
                     }
-                    ShapeHelper.DrawPolygon(points, color, gp);
+                    ShapeHelper.DrawPolygon(points, new SolidColorBrush(Color.FromRgb((byte)this.color[0], (byte)this.color[1], (byte)this.color[2])), contextControl.MainStage);
                 }
             }
 
@@ -433,6 +438,7 @@ namespace GraphicsCommon
         public int nVertices { get; set; }
         public int nEdges { get; set; }
         public int nFaces { get; set; }
+        public int[] color { get; set; }
 
     }
 }

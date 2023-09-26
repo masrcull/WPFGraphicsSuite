@@ -18,11 +18,11 @@ namespace ModelRender.Models
             Models = models;
         }
 
-        public void DrawMesh(SolidColorBrush color, Canvas gp, double[] eye)
+        public void DrawMesh(GraphicContextControl contextControl)
         {
             foreach(var model in Models)
             {
-                model.DrawFaces(color, gp, eye);
+                model.DrawFaces(contextControl);
             }
         }
 

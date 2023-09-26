@@ -58,7 +58,7 @@ namespace MotionBlindness
             mainStage.Children.Add(circles[0]);
 
 
-            var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", mainStage, new double[] { plusRenderMin, plusRenderMax, 13.0 });
+            var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { plusRenderMin, plusRenderMax, 13.0 });
             plusModel.Scale(new double[] { 0, 0, 1 });
             //plusModel.Scale(new double[] {1,1,0});
             //plusModel2.Scale(new double[] { 1, 1, 0 });
@@ -70,7 +70,7 @@ namespace MotionBlindness
             {
                 for (double j = plusRenderMax; j > plusRenderMin; j -= distanceSlider.Value)
                 {
-                    currentModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", mainStage, new double[] { i, -j, 13.0 });
+                    currentModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { i, -j, 13.0 });
                     models.Add(currentModel);
                 }
             }
@@ -87,8 +87,8 @@ namespace MotionBlindness
                 foreach (Model model in models)
                 {
                     
-                    model.RotateZ((rotationSpeed * Math.PI) / 180, false);
-                    model.DrawFaces(Brushes.Red, mainStage, Eye);
+                    model.RotateZ((rotationSpeed * Math.PI) / 180, null, false);
+                    //model.DrawFaces(Brushes.Red, mainStage, Eye);
                 }
 
                 foreach(Ellipse circle in circles)
@@ -112,7 +112,7 @@ namespace MotionBlindness
             {
                 for (double j = plusRenderMax; j > plusRenderMin; j -= distanceSlider.Value)
                 {
-                    currentModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", mainStage, new double[] { i, -j, 13.0 });
+                    currentModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { i, -j, 13.0 });
                     models.Add(currentModel);
                 }
             }
