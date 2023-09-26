@@ -315,6 +315,11 @@ namespace GraphicsCommon
                 LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
         }
 
+        public void Scale(double X, double Y, double Z)
+        {
+            Scale(new double[] { X, Y, Z });
+        }
+
         public void Scale(double[] scalars)
         { 
             // move model to origin
