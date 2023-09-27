@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 using GraphicsCommon;
+using ModelRender.Helpers;
 using ModelRender.Models;
 
 namespace ModelRender.Models
@@ -109,6 +111,46 @@ namespace ModelRender.Models
                 mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid[2]).ToList();
                 mesh.DrawMesh(this);
             }
+        }
+
+        public void DrawCircle(Point[] points)
+        {
+            ShapeHelper.DrawPolygon(points, new SolidColorBrush(Colors.HotPink), this);
+        }
+
+        public void CreateCircleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        {
+            var points = ShapeHelper.GenerateCirclePoints(radius, 16);
+            double[,] vertices = new double[points.Length,3];
+            int[] face = new int[points.Length];
+
+            for(int i= 0; i < points.Length; i++)
+            {
+                vertices[i,0] = points[i].X;
+                vertices[i, 1] = points[i].Y;
+                vertices[i, 2] = 0;
+            }
+
+            for(int i = 0;  i < points.Length; i++)
+            {
+                face[i] = i;
+            }
+
+            var exportModel = new ExportModel
+            {
+                vertices = ArrayHelper.ToJaggedArray(vertices),
+                edges = new int[][] { new int[] { 0, 0 } },
+                faces = new int[][] { face },
+                nVertices = (vertices.Length / 3),
+                nEdges = 1,
+                nFaces = 1,
+                color = new int[] { R, G, B}
+
+            };
+
+            Model.ExportModel(filePath, exportModel);
+
+
         }
 
         public void Clear()

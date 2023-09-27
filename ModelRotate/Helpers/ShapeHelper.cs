@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModelRender.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,14 +30,32 @@ namespace GraphicsCommon
             gp.Children.Add(polygon);
         }
 
+        public static void DrawPolygon(Point[] points, SolidColorBrush color, GraphicContextControl gcc )
+        {
+            Polygon polygon = new Polygon
+            {
+                Fill = color,  // Optional: Set the fill color
+                Stroke = Brushes.Black,    // Optional: Set the border color
+                StrokeThickness = 1       // Optional: Set the border thickness
+            };
+
+            foreach (var point in points)
+            {
+                polygon.Points.Add(point);
+            }
+
+            gcc.MainStage.Children.Add(polygon);
+        }
+
         public static void DrawCircle(double radius, SolidColorBrush color, Canvas gp)
         {
             DrawPolygon(GenerateCirclePoints(radius), color, gp);
         }
 
-        public static Point[] GenerateCirclePoints(double radius)
+        public static Point[] GenerateCirclePoints(double radius, int numPoints = 0)
         {
-            int numPoints = (int)(radius * 2 * Math.PI); // Reasonable approximation for number of points
+            if(numPoints == 0)
+                numPoints = (int)(radius * 2 * Math.PI); // Reasonable approximation for number of points
             Point[] points = new Point[numPoints];
 
             for (int i = 0; i < numPoints; i++)
@@ -57,13 +76,15 @@ namespace GraphicsCommon
             for (int i = 0; i < numberOfPoints; i++)
             {
                 double angle = i * angleIncrement;
-                double x = Math.Cos(angle);
-                double y = Math.Sin(angle);
+                double x = 10 + Math.Cos(angle);
+                double y = 10 + Math.Sin(angle);
 
                 points[i] = new Point(x, y);
             }
 
-            return points;
+            var reversed = points.Reverse().ToArray();
+
+            return reversed;
         }
 
 

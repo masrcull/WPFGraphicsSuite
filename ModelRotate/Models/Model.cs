@@ -179,6 +179,13 @@ namespace GraphicsCommon
             File.WriteAllText(filePath, stringy);
         }
 
+        public static void ExportModel(string filePath, ExportModel exportModel)
+        {
+            var stringy = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
+            File.WriteAllText(filePath, stringy);
+        }
+
         public static void ExportFuseModels(string filePath, List<Model> models)
         {
             var nvertices = models.Sum(x => x.nVertices);
