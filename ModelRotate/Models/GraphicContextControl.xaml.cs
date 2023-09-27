@@ -78,7 +78,7 @@ namespace ModelRender.Models
             Height = 800;
             MainStage.Width = Width;
             MainStage.Height = Height;
-            Background = new SolidColorBrush(Colors.Black);
+            MainStage.Background = new SolidColorBrush(Colors.Black);
 
             _actions = new List<Action>();
             _timer = new DispatcherTimer();
@@ -108,7 +108,7 @@ namespace ModelRender.Models
             //Meshes.Models = Meshes.OrderByDescending(obj => obj.CalculateCentroid()[2]).ToList();
             foreach(var mesh in Meshes)
             {
-                mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid[2]).ToList();
+                mesh.Models = mesh.Models.OrderBy(obj => obj.Centroid[2]).ToList();
                 mesh.DrawMesh(this);
             }
         }

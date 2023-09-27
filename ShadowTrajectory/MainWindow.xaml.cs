@@ -22,8 +22,6 @@ namespace ShadowTrajectory
     /// </summary>
     public partial class MainWindow : Window
     {
-        Canvas mainStage = null;
-        double[] Eye = new double[] { 0, 0, 0 };
 
         GraphicContextControl GCC = new GraphicContextControl();
 
@@ -47,10 +45,10 @@ namespace ShadowTrajectory
             CircleModel.Scale(1, 1, 1);
 
             tableSideLeft.Scale(0.3, 2, 2.5);
-            tableSideLeft.Translate(2.5, .8, 0);
+            tableSideLeft.Translate(2.5, -.8, 0);
 
             tableSideRight.Scale(0.3, 2, 2.5);
-            tableSideRight.Translate(-2.5, .8, 0);
+            tableSideRight.Translate(-2.5, -.8, 0);
             tableBottom.Scale(4.5, 0.3, 2.5);
 
             tableSideRight.color = new int[] { 0, 255, 0 };
