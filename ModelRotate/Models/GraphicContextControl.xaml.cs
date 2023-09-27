@@ -126,8 +126,8 @@ namespace ModelRender.Models
 
             for(int i= 0; i < points.Length; i++)
             {
-                vertices[i,0] = points[i].X;
-                vertices[i, 1] = points[i].Y;
+                vertices[i,0] = points[i][0];
+                vertices[i, 1] = points[i][1];
                 vertices[i, 2] = 0;
             }
 

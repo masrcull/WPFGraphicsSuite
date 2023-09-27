@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,6 +83,39 @@ namespace ModelRender.Helpers
 
             return twoDArray;
         }
+
+        public static double[][] PointsToDoubleArray(Point[] points)
+        {
+            double[][] result = new double[points.Length][];
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                result[i] = new double[] { points[i].X, points[i].Y };
+            }
+
+            return result;
+        }
+
+        public static Point[] DoubleArrayToPoints(double[][] array)
+        {
+            Point[] points = new Point[array.Length];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                // Assuming that each inner array has at least 2 elements for X and Y
+                points[i] = new Point(array[i][0], array[i][1]);
+            }
+
+            return points;
+        }
+
+
+
+
+
+
+
+
 
     }
 }

@@ -410,7 +410,7 @@ namespace GraphicsCommon
                         }
 
                     }
-                    ShapeHelper.DrawPolygon(points, new SolidColorBrush(Color.FromRgb((byte)this.color[0], (byte)this.color[1], (byte)this.color[2])), contextControl.MainStage);
+                    ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb((byte)this.color[0], (byte)this.color[1], (byte)this.color[2])), contextControl.MainStage);
                 }
             }
 

@@ -38,11 +38,13 @@ namespace ShadowTrajectory
             
 
             var CircleModel = new Model("C:\\ModelExports\\circley.json", 0, 0, -15);
+            var CircleModel2 = new Model("C:\\ModelExports\\circley.json", 3, 0, -15);
             var tableBottom = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, -15);
             var tableSideRight = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, -15);
             var tableSideLeft = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, -15);
 
             //CircleModel.Scale(3,3,3);
+            CircleModel.Scale(1, 1, 1);
 
             tableSideLeft.Scale(0.3, 2, 2.5);
             tableSideLeft.Translate(2.5, .8, 0);
@@ -53,15 +55,17 @@ namespace ShadowTrajectory
 
             tableSideRight.color = new int[] { 0, 255, 0 };
 
-            var table = GCC.AddModels( new List<Model> { tableSideRight, tableSideLeft, tableBottom/*, CircleModel */} );
-            var circle = GCC.AddModels(new List<Model> {  CircleModel });
+            var table = GCC.AddModels( new List<Model> { tableSideRight, tableSideLeft, tableBottom, CircleModel} );
+            //var table = GCC.AddModels(new List<Model> { tableSideRight, tableSideLeft, tableBottom });
+
+            //var table = GCC.AddModels(new List<Model> {  CircleModel, CircleModel2 });
 
 
             //tableBottom.RotateX(10);
             //tableSideRight.RotateX(10);
 
 
-
+            
 
 
             bool redIncrease = true;
@@ -72,7 +76,7 @@ namespace ShadowTrajectory
             byte green = 128;
             byte blue = 200;
 
-            table.RotateY(90);
+            //table.RotateY(90);
             table.RotateX(-.6);
             
 
@@ -83,8 +87,9 @@ namespace ShadowTrajectory
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
                 //tableBottom.color = new int[] { red, green, blue };
-               table.RotateY(.1);
-                circle.RotateX(.1);
+                table.RotateY(.1);
+                //circles.RotateX(.1);
+            
                 
 
                 //tableBottom.RotateX(.1);
