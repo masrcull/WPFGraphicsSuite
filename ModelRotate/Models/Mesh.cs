@@ -45,6 +45,11 @@ namespace ModelRender.Models
             return new double[] { (sumx/Models.Count), (sumy/Models.Count), (sumz/Models.Count) };
         }
 
+        public void Translate(double X, double Y, double Z)
+        {
+            
+        }
+
         public void RotateX(double radians)
         {
             var initialCentroid = CalculateCentroid();
