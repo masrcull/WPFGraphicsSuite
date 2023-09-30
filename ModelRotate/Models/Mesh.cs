@@ -18,9 +18,20 @@ namespace ModelRender.Models
             get { return CalculateCentroid(); }
         }
 
+        public Mesh()
+        {
+            Models = new List<Model>();
+        }
+
         public Mesh(List<Model> models)
         {
             Models = models;
+        }
+
+        public Model AddModel(Model model)
+        {
+            Models.Add(model);
+            return model;
         }
 
         public void DrawMesh(GraphicContextControl contextControl)
@@ -72,6 +83,14 @@ namespace ModelRender.Models
             foreach (Model model in Models)
             {
                 model.RotateZ(radians, initialCentroid);
+            }
+        }
+
+        public void SetColorAllModels(int R, int G, int B)
+        {
+            foreach(Model model in Models)
+            {
+                model.SetColor(R, G, B);  
             }
         }
 

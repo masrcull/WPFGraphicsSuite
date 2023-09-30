@@ -66,7 +66,7 @@ namespace ShadowTrajectory
 
 
 
-            circleMesh.RotateY(3.14);
+            //circleMesh.RotateY(3.14);
 
             bool redIncrease = true;
             bool greenIncrease = true;
@@ -90,7 +90,7 @@ namespace ShadowTrajectory
 
                 //circles.RotateX(.1);
 
-                //table.RotateX(.1);
+                table.RotateY(.1);
 
                 //tableBottom.RotateX(.1);
             });

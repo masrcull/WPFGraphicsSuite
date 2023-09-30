@@ -92,7 +92,7 @@ namespace GraphicsCommon
                 points[i, 1] = Math.Abs(y) < threshold ? 0.0 : y;
             }
 
-            return ArrayHelper.ToJaggedArray(points).Reverse().ToArray();
+            return ArrayHelper.ToJaggedArray(points);
         }
 
         //public static double[][] GenerateCirclePoints(double radius, int numPoints = 0)

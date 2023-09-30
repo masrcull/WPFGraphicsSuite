@@ -46,15 +46,6 @@ namespace GraphicsCommon
                 return LinearAlgebra.CalculateCentroid(this.Vertices);
             }
         }
-        //public Model(string filePath, Canvas mainStage) : this(filePath, mainStage)
-        //{
-            
-        //}
-
-        //public Model(string filePath, Canvas mainStage) : this(filePath)
-        //{
-        //     MainStage = mainStage;
-        //}
 
         public Model()
         {
@@ -103,16 +94,6 @@ namespace GraphicsCommon
                 }
             }
 
-
-
-            //for (int i = 0; i < modelData.faces.Length; i++)
-            //{
-            //    for (int j = 0; j < 4; j++)
-            //    {
-            //        this.faces[i, j] = modelData.faces[i][j];
-            //    }
-            //}
-
             for (int i = 0; i < modelData.faces.Length; i++)
             {
                 //this.faces2[i] = new List<int>();
@@ -135,15 +116,6 @@ namespace GraphicsCommon
 
             return model;
         }
-
-        //public static Model CreateModel(string filePath, double[] initialCoordinates, double[] scale)
-        //{
-        //    Model model = new Model("filePath");
-        //    model.Translate(initialCoordinates);
-        //    model.Scale(scale);
-
-        //    return model;
-        //}
 
         public Model(int nvertices, int nedges, int nfaces)
         {
@@ -345,6 +317,11 @@ namespace GraphicsCommon
 
             // return to original position
             LinearAlgebra.TranslateVertices(this.Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+        }
+
+        public void SetColor(int R, int G, int B)
+        {
+            color = new int[] { R, G, B };
         }
 
         public void Translate(double[] coordinates)

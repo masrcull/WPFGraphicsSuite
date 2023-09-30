@@ -36,10 +36,10 @@
             <Label Foreground="White" Content="Circle Diameter" HorizontalContentAlignment="Left" FontSize="12"/>
             <Slider Width="Auto" Margin="5,0,5,20"
                     x:Name="diameterSlider" 
-                    Minimum="10" 
-                    Maximum="100" 
-                    Value="20" 
-                    TickFrequency="1" 
+                    Minimum="0" 
+                    Maximum="10" 
+                    Value="1" 
+                    TickFrequency=".05" 
                     IsSnapToTickEnabled="True" ValueChanged="diameterSlider_ValueChanged"/>
             <Grid Height="300">
                 <Grid.ColumnDefinitions>
@@ -78,9 +78,9 @@
         </StackPanel>
 
         <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Left"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
-            <Canvas.LayoutTransform>
+            <!--<Canvas.LayoutTransform>
                 <ScaleTransform ScaleX="-1" ScaleY="-1" CenterX="400" CenterY="400"/>
-            </Canvas.LayoutTransform>
+            </Canvas.LayoutTransform>-->
         </Canvas>
 
     </Grid>
