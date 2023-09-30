@@ -6,6 +6,18 @@
         xmlns:local="clr-namespace:ShadowTrajectory"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1050">
+    <Window.Resources>
+        <Style x:Key="CheckBoxStyleRadioButton" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <CheckBox IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Name="MainGrid" Background="HotPink">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -20,16 +32,26 @@
                 Value="0" 
                 TickFrequency=".5" 
                 IsSnapToTickEnabled="True" ValueChanged="posXSlider_ValueChanged"/>
-
-            <Slider Width="18"  Margin="5,0,5,20" Orientation="Vertical" HorizontalAlignment="Left" IsDirectionReversed="True"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="37"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            <Slider Grid.Column="0" Width="18"  Margin="5,0,5,20" Orientation="Vertical" HorizontalAlignment="Left" IsDirectionReversed="True"
                 x:Name="BallPositionY" 
                 Minimum="-1" 
                 Maximum="1" 
                 Value="0" 
                 TickFrequency=".5" 
                 IsSnapToTickEnabled="True" ValueChanged="posYSlider_ValueChanged" Height="173"/>
+                <StackPanel Grid.Column="1">
+                    <RadioButton x:Name="checkBoxDisc" GroupName="ChoiceGroup" Checked="OnChecked" Content="Disc" Style="{StaticResource CheckBoxStyleRadioButton}" />
+                    <RadioButton x:Name="checkBoxTriangle" GroupName="ChoiceGroup" Checked="OnChecked" Content="Triangle" Style="{StaticResource CheckBoxStyleRadioButton}" />
 
-
+                </StackPanel>
+                
+            </Grid>
+            
 
         </StackPanel>
 
