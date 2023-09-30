@@ -36,10 +36,10 @@
             <Label Foreground="White" Content="Circle Diameter" HorizontalContentAlignment="Left" FontSize="12"/>
             <Slider Width="Auto" Margin="5,0,5,20"
                     x:Name="diameterSlider" 
-                    Minimum="0" 
-                    Maximum="10" 
-                    Value="1" 
-                    TickFrequency=".05" 
+                    Minimum=".2" 
+                    Maximum=".6" 
+                    Value=".2" 
+                    TickFrequency=".1" 
                     IsSnapToTickEnabled="True" ValueChanged="diameterSlider_ValueChanged"/>
             <Grid Height="300">
                 <Grid.ColumnDefinitions>

@@ -109,6 +109,74 @@ namespace GraphicsCommon
 
         }
 
+        public Model(ModelData modelData, double? X = null, double? Y = null, double? Z = null )
+        {
+            double[] initialCoordinates;
+            if (X == null || Y == null || Z == null)
+            {
+                initialCoordinates = new double[] { 0, 0, 0 };
+            }
+            else
+                initialCoordinates = new double[] { (double)X, (double)Y, (double)Z };
+
+
+            this.nVertices = modelData.nVertices;
+            this.nEdges = modelData.nEdges;
+            this.nFaces = modelData.nFaces;
+            Vertices = new double[this.nVertices, 3];
+            edges = new int[this.nEdges, 2];
+            faces = new int[this.nFaces, 4];
+
+            faces2 = new int[nFaces][];
+
+            this.color = modelData.color;
+
+            //faces2 = new List<int>[this.nFaces];
+
+
+            for (int i = 0; i < modelData.nVertices; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    this.Vertices[i, j] = modelData.vertices[i][j];
+                }
+            }
+
+            for (int i = 0; i < modelData.edges.Length; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    this.edges[i, j] = modelData.edges[i][j];
+                }
+            }
+
+            for (int i = 0; i < modelData.faces.Length; i++)
+            {
+                //this.faces2[i] = new List<int>();
+                this.faces2[i] = new int[modelData.faces[i].Length];
+                for (int j = 0; j < modelData.faces[i].Length; j++)
+                {
+                    this.faces2[i][j] = modelData.faces[i][j];
+                }
+            }
+
+            this.Translate(initialCoordinates);
+        }
+
+        public static ModelData GetModelData(string filePath, double X, double Y, double Z)
+        {
+            var initialCoordinates = new double[] { X, Y, Z };
+            if (initialCoordinates == null)
+            {
+                initialCoordinates = new double[] { 0, 0, 0 };
+            }
+
+            var jsonString = File.ReadAllText(filePath);
+            var modelData = JsonSerializer.Deserialize<ModelData>(jsonString);
+
+            return modelData;
+        }
+
         public static Model CreateModel(string filePath, double[] initialCoordinates, Canvas mainStage)
         {
             var model = new Model("filePath");
@@ -156,99 +224,6 @@ namespace GraphicsCommon
             var stringy = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
             File.WriteAllText(filePath, stringy);
-        }
-
-        public static void ExportFuseModels(string filePath, List<Model> models)
-        {
-            var nvertices = models.Sum(x => x.nVertices);
-            var nedges = models.Sum(x => x.nEdges);
-            var nfaces = models.Sum(x => x.nFaces);
-
-            var exportModels = new List<ExportModel>();
-            var exportModel = new ExportModel();
-
-            var vertList = new List<double[]>();
-            var edgeList = new List<int[]>();
-            var faceList = new List<int[]>();
-
-            exportModel.vertices = new double[nvertices][];
-            exportModel.faces = new int[nfaces][];
-            exportModel.edges = new int[nedges][];
-
-            exportModel.nVertices = nvertices;
-            exportModel.nEdges = nedges;
-            exportModel.nFaces = nfaces;
-
-            foreach (Model model in models)
-            {
-                var tempModel = Model.ToExportModel(model);
-                exportModels.Add(tempModel);
-                for(int i = 0; i < tempModel.nVertices; i++)
-                {
-                    vertList.Add(tempModel.vertices[i]);
-                }
-                for (int i = 0; i < tempModel.nEdges; i++)
-                {
-                    edgeList.Add(tempModel.edges[i]);
-                }
-                for (int i = 0; i < tempModel.nFaces; i++)
-                {
-                    faceList.Add(tempModel.faces[i]);
-                }
-            }
-
-            for(int i = 0; i<nvertices; i++)
-            {
-                exportModel.vertices[i] = vertList[i];
-            }
-            for (int i = 0; i < nedges; i++)
-            {
-                exportModel.edges[i] = edgeList[i];
-            }
-            for (int i = 0; i < nfaces; i++)
-            {
-                exportModel.faces[i] = faceList[i];
-            }
-
-
-            var jsonModels = new string[models.Count];
-            string jsonModel;
-
-            jsonModel = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
-
-            var newModel = new Model(nvertices, nedges, nfaces);
-
-            for(int i=0; i < models.Count; i++)
-            {
-                jsonModels[i] = JsonSerializer.Serialize(exportModels[i]/*, new JsonSerializerOptions { WriteIndented = true }*/);
-            }
-
-            var mergeString = JSONHelper.MergeJsonObjects(jsonModels);
-            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
-            File.WriteAllText(filePath, jsonModel);
-
-
-            //var fusedModel = new ExportModel()
-            //{
-            //    nVertices = nvertices,
-            //    nEdges = nedges,
-            //    nFaces = nfaces,
-            //    vertices = new double[nvertices][],
-            //    faces = new int[nfaces][],
-            //    edges = new int[nedges][],
-            //};		nvertices	32	int
-
-
-            //fusedModel.nVertices = models.Sum(x => x.nVertices);
-            //int sum = models.Sum(x => x.nVertices);
-
-            //foreach (Model model in models)
-            //{
-            //    for(int i = 0; i < model.nVertices; i++)
-            //    {
-            //        //fusedModel.vertices += ArrayHelper.ToJaggedArray( model.Vertices);
-            //    }
-            //}
         }
 
         public void RotateX(double radians, double[] centroid = null)
@@ -305,6 +280,8 @@ namespace GraphicsCommon
         {
             Scale(new double[] { X, Y, Z });
         }
+
+        public void Scale(double scalar) => Scale(scalar, scalar, scalar);
 
         public void Scale(double[] scalars)
         { 

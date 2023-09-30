@@ -37,10 +37,22 @@ namespace MotionBlindness
 
         double circleDiameter = 20;
 
-        Mesh circleMesh = new Mesh();
+        Mesh circleNorthMesh = new Mesh();
+
+        Model circleModelNorth;
+        Model circleModelEast;
+        Model circleModelSouth;
+        Model circleModelWest;
+
+        bool diameterChanged = true;
+        bool plusChange = false;
+
+        double circleScalar = .2;
 
         const double plusRenderMin = -8.5;
         const double plusRenderMax = 8.5;
+
+        double[,] OGVerts;
 
         double rotationSpeed = 1;
 
@@ -52,84 +64,97 @@ namespace MotionBlindness
 
             circleBrush = Brushes.Yellow;
 
-            GCC.CreateCircleModel("C:\\ModelExports\\circley.json", .2, 255, 0, 0);
-  
-            Model circleModelNorth = new Model("C:\\ModelExports\\circley.json", 0, 4.5, 12);
-            Model circleModelEast = new Model("C:\\ModelExports\\circley.json", 4.5, 0, 12);
-            Model circleModelSouth = new Model("C:\\ModelExports\\circley.json", 0, -4.5, 12);
-            Model circleModelWest = new Model("C:\\ModelExports\\circley.json", -4.5, 0, 12);
-            
-            
+            GCC.CreateCircleModel("C:\\ModelExports\\circley.json", 1, 255, 0, 0);
+
+            var dataCircleNorth = Model.GetModelData("C:\\ModelExports\\circley.json", 0, 4.5, 12);
+            var dataCircleEast = Model.GetModelData("C:\\ModelExports\\circley.json", 4.5, 0, 12);
+            var dataCircleSouth = Model.GetModelData("C:\\ModelExports\\circley.json", 0, -4.5, 12);
+            var dataCircleWest = Model.GetModelData("C:\\ModelExports\\circley.json", -4.5, 0, 12);
+
+
+
+
+
+            //GCC.AddMesh(circleNorthMesh);
+
 
             var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { 6, 6, 13.0 });
-
             renderPlusses();
-            circleMesh = GCC.AddModels(new List<Model> { circleModelNorth, circleModelEast, circleModelSouth, circleModelWest });
-            circleMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
+            //circleMesh = GCC.AddModels(new List<Model> { circleModelNorth, circleModelEast, circleModelSouth, circleModelWest });
+            circleNorthMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
 
 
             GCC.AddMethod(() =>
             {
                 plusMesh.RotateZ(.1);
                 //circleMesh.RotateY(.1);
+
+                if (diameterChanged)
+                {
+                    circleScalar = diameterSlider.Value;
+                    var modelNorth = new Model(dataCircleNorth, 0, 0, 12);
+                    var modelEast = new Model(dataCircleEast, 4.5, 0, 12);
+                    var modelSouth = new Model(dataCircleSouth, 0, -4.5, 12);
+                    var modelWest = new Model(dataCircleWest, -4.5, 0, 12);
+
+                    modelNorth.Scale(circleScalar);
+                    modelEast.Scale(circleScalar);
+                    modelSouth.Scale(circleScalar);
+                    modelWest.Scale(circleScalar);
+
+
+                    circleNorthMesh = new Mesh(new List<Model> { modelNorth, modelEast, modelSouth, modelWest });
+                    //circleNorthMesh.Scale(circleScalar);
+                    if (RedSlider != null && GreenSlider != null && BlueSlider != null)
+                    {
+                        circleNorthMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
+                        //model.SetColor((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
+                    }
+
+                    diameterChanged = false;
+                    plusChange = true;
+                }
+
+                if(plusChange)
+                {
+                    GCC.Meshes = new List<Mesh>();
+                    var models = new List<Model>();
+
+
+
+                    for (double i = plusRenderMin; i < plusRenderMax; i += distanceSlider.Value)
+                    {
+                        for (double j = plusRenderMax; j > plusRenderMin; j -= distanceSlider.Value)
+                        {
+                            models.Add(new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { i, -j, 13.0 }));
+                        }
+                    }
+
+                    plusMesh = GCC.AddModels(models);
+                    GCC.AddMesh(circleNorthMesh);
+                    plusChange = false;
+
+                }
+
+                //renderPlusses();
+
             });
 
 
             GCC.Start();
 
-
-
-
-
-
-
-
-
-            //DispatcherTimer timer = new DispatcherTimer();
-            //timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
-            //timer.Tick += (s, e) =>
-            //{
-
-            //    //mainStage.Children.Clear();
-
-                
-
-            //    foreach (Model model in models)
-            //    {
-                    
-            //        model.RotateZ((rotationSpeed * Math.PI) / 180, null, false);
-            //        //model.DrawFaces(Brushes.Red, mainStage, Eye);
-            //    }
-
-            //    foreach(Ellipse circle in circles)
-            //    {
-            //        circle.Fill = circleBrush;
-            //        mainStage.Children.Add(circle);
-            //    }
-            //};
-            //timer.Start();
-
-
         }
 
-        private void renderCircles()
-        {
 
-        }
+
+
 
         private void renderPlusses()
         {
-            GCC.Meshes = new List<Mesh>();
-            var models = new List<Model>();
-            for (double i = plusRenderMin; i < plusRenderMax; i += distanceSlider.Value)
-            {
-                for (double j = plusRenderMax; j > plusRenderMin; j -= distanceSlider.Value)
-                {
-                    models.Add(new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { i, -j, 13.0 }));
-                }
-            }
-            plusMesh = GCC.AddModels(models);
-            GCC.AddMesh(circleMesh);
+
+
+            plusChange = true;
+            
         }
 
         private void distanceSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -149,19 +174,14 @@ namespace MotionBlindness
             
             if (RedSlider != null && GreenSlider != null && BlueSlider != null)
             {
-                circleMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
+                circleNorthMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
             }
         }
 
         private void diameterSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double scalar = .8;
-            if (e.NewValue > e.OldValue)
-                scalar += .4;
-            foreach (var model in circleMesh.Models)
-            {
-                model.Scale(scalar, scalar, scalar);
-            }
+            //circleScalar = diameterSlider.Value;
+            diameterChanged = true;
         }
     }
 }

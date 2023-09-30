@@ -61,6 +61,22 @@ namespace ModelRender.Models
             
         }
 
+        public void Scale(double X, double Y, double Z)
+        {
+            foreach (var model in Models)
+            {
+                model.Scale(X, Y, Z);
+            }
+        }
+
+        public async void Scale(double scalar)
+        {
+            foreach (var model in Models)
+            {
+                model.Scale(scalar, scalar, scalar);
+            }
+        }
+
         public void RotateX(double radians)
         {
             var initialCentroid = CalculateCentroid();
