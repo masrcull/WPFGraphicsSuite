@@ -56,6 +56,22 @@ namespace GraphicsCommon
             DrawPolygon(GenerateCirclePoints(radius), color, gp);
         }
 
+        //public static double[][] GenerateSpherePoints(int divisions)
+        //{
+        //    double increment = .5 / divisions;
+        //    //double[,] points = new double[,3];
+
+
+        //    for(int i = 0; i<.5; i++)
+        //    {
+
+        //    }
+
+
+
+        //    return new double[3][] {  6.0,0,0 };
+        //}
+
         public static double[][] GenerateCirclePoints(double radius, int numPoints = 0)
         {
             if (numPoints == 0)
@@ -76,7 +92,7 @@ namespace GraphicsCommon
                 points[i, 1] = Math.Abs(y) < threshold ? 0.0 : y;
             }
 
-            return ArrayHelper.ToJaggedArray(points);
+            return ArrayHelper.ToJaggedArray(points).Reverse().ToArray();
         }
 
         //public static double[][] GenerateCirclePoints(double radius, int numPoints = 0)
