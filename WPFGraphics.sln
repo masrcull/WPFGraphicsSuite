@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoothy", "Smoothy\Smoothy.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpacialFreq", "SpacialFreq\SpacialFreq.csproj", "{F9D77CD3-47F5-43D5-8638-9F5F2A89BA3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowTrajectory", "ShadowTrajectory\ShadowTrajectory.csproj", "{CF7B705D-A291-473A-946D-730C567ABB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShadowTrajectory", "ShadowTrajectory\ShadowTrajectory.csproj", "{CF7B705D-A291-473A-946D-730C567ABB42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DPyramid", "3DPyramid\3DPyramid.csproj", "{7E32860B-3615-41BA-9C4B-356D2802D8CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{CF7B705D-A291-473A-946D-730C567ABB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7B705D-A291-473A-946D-730C567ABB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF7B705D-A291-473A-946D-730C567ABB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E32860B-3615-41BA-9C4B-356D2802D8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E32860B-3615-41BA-9C4B-356D2802D8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E32860B-3615-41BA-9C4B-356D2802D8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E32860B-3615-41BA-9C4B-356D2802D8CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

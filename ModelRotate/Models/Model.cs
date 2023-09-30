@@ -61,6 +61,7 @@ namespace GraphicsCommon
                 initialCoordinates = new double[] { 0, 0, 0 };
             }
 
+
             var jsonString = File.ReadAllText(filePath);
             var modelData = JsonSerializer.Deserialize<ModelData>(jsonString);
 
