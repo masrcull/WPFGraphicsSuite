@@ -5,9 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShadowTrajectory"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <Grid Name="MainGrid">
-        
+        Title="MainWindow" Height="800" Width="1050">
+    <Grid Name="MainGrid" Background="HotPink">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Background="#424242" HorizontalAlignment="Left" Width="230">
+
+            <Slider Width="Auto"  Margin="5,0,5,20"
+                x:Name="BallPosition" 
+                Minimum="-1" 
+                Maximum="1" 
+                Value="0" 
+                TickFrequency=".5" 
+                IsSnapToTickEnabled="True" ValueChanged="speedSlider_ValueChanged"/>
+            <Label Content="Button Position X:  " HorizontalAlignment="Left" Width="104" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="-0.455"/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="-0.492"/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="Label" HorizontalAlignment="Right" Width="99"/>
+
+
+
+        </StackPanel>
+
+        <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Right"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
+            <!--<Canvas.LayoutTransform>
+        <ScaleTransform ScaleX="-1" ScaleY="-1" CenterX="400" CenterY="400"/>
+    </Canvas.LayoutTransform>-->
+        </Canvas>
         <!--<Canvas Name="MainStage" Background="#424242" />-->
     </Grid>
 </Window>

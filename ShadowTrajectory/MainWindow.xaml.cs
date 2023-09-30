@@ -25,35 +25,46 @@ namespace ShadowTrajectory
 
         GraphicContextControl GCC = new GraphicContextControl();
 
+        Model CircleModel;
+
         public MainWindow()
         {
             InitializeComponent();
             //mainStage = this.FindName("MainStage") as Canvas;
 
-            MainGrid.Children.Add(GCC);
+            MainStage.Children.Add(GCC);
 
-            GCC.CreateCircleModel("C:\\ModelExports\\circley.json", 1, 255, 0, 0);
+            GCC.CreateCircleModel("C:\\ModelExports\\circley.json", .2, 128, 0, 0);
             
 
-            var CircleModel = new Model("C:\\ModelExports\\circley.json", 0, 0, 15);
-            var CircleModel2 = new Model("C:\\ModelExports\\circley.json", 6, 0, 15);
+            CircleModel = new Model("C:\\ModelExports\\circley.json", 0, 0, 15);
+            var CircleModel2 = new Model("C:\\ModelExports\\circley.json", 0, -1, 15);
             var tableBottom = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 15);
-            var tableSideRight = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 15);
-            var tableSideLeft = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 0, 0, 15);
+            var tableSideRightFront = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 2.0, 1.1, 14.2);
+            var tableSideRightBack = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", 2.0, 1.1, 16);
+            var tableSideLeftFront = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", -2.0, 1.1, 14.2);
+            var tableSideLeftBack = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", -2.0, 1.1, 16);
 
             //CircleModel.Scale(3,3,3);
             CircleModel.Scale(1, 1, 1);
 
-            tableSideLeft.Scale(0.3, 2, 2.5);
-            tableSideLeft.Translate(-2.5, .8, 0);
+            tableSideLeftFront.Scale(0.3, 2, .2);
+            tableSideLeftBack.Scale(0.3, 2, .2);
 
-            tableSideRight.Scale(0.3, 2, 2.5);
-            tableSideRight.Translate(2.5, .8, 0);
+
+            tableSideRightFront.Scale(0.3, 2, .2);
+            tableSideRightBack.Scale(0.3, 2, .2);
+
+
+
             tableBottom.Scale(4.5, 0.3, 2.5);
 
-            tableSideRight.color = new int[] { 0, 255, 0 };
 
-            var table = GCC.AddModels( new List<Model> { tableSideRight, tableSideLeft, tableBottom, CircleModel} );
+            var table = GCC.AddModels( new List<Model> { tableSideRightFront, tableSideRightBack, tableSideLeftFront, tableSideLeftBack, tableBottom } );
+            var shadow = GCC.AddModels(new List<Model> { CircleModel });
+
+            table.SetColorAllModels(66, 66, 66);
+            CircleModel.SetColor(33, 33, 33);
 
             //var table = GCC.AddModels(new List<Model> { tableSideRight, tableSideLeft, tableBottom });
 
@@ -76,9 +87,14 @@ namespace ShadowTrajectory
             byte green = 128;
             byte blue = 200;
 
-            //table.RotateY(90);
+            CircleModel.RotateX(-Math.PI / 2);
+
+            table.RotateX(Math.PI/8);
+            table.RotateY(Math.PI / 8);
+            CircleModel.RotateX(Math.PI / 8);
+            CircleModel.RotateY(Math.PI / 8);
             //table.RotateX(-.6);
-            
+
 
             GCC.AddMethod(() =>
             {
@@ -90,7 +106,8 @@ namespace ShadowTrajectory
 
                 //circles.RotateX(.1);
 
-                table.RotateY(.1);
+                //table.RotateY(.1);
+                //CircleModel.RotateY(.1);
 
                 //tableBottom.RotateX(.1);
             });
@@ -104,6 +121,14 @@ namespace ShadowTrajectory
             
 
 
+        }
+
+        private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var centroid = CircleModel.Centroid;
+            CircleModel.Translate(-centroid[0], -centroid[1], -centroid[2]);
+            CircleModel.Translate(e.NewValue, 0, 0);
+            CircleModel.Translate(centroid[0], centroid[1], centroid[2]);
         }
     }
 }
