@@ -29,20 +29,12 @@ namespace MotionBlindness
 
         GraphicContextControl GCC = new GraphicContextControl();
 
-        SolidColorBrush circleBrush;
 
         Mesh plusMesh = new Mesh();
 
-        List<Ellipse> circles = new List<Ellipse>();
-
-        double circleDiameter = 20;
-
         Mesh circleNorthMesh = new Mesh();
 
-        Model circleModelNorth;
-        Model circleModelEast;
-        Model circleModelSouth;
-        Model circleModelWest;
+
 
         bool diameterChanged = true;
         bool plusChange = false;
@@ -54,15 +46,13 @@ namespace MotionBlindness
 
         double[,] OGVerts;
 
-        double rotationSpeed = 1;
+        double rotationSpeed = .05;
 
         public MainWindow()
         {
             InitializeComponent();
 
             MainStage.Children.Add(GCC);
-
-            circleBrush = Brushes.Yellow;
 
             GCC.CreateCircleModel("C:\\ModelExports\\circley.json", 1, 255, 0, 0);
 
@@ -86,13 +76,13 @@ namespace MotionBlindness
 
             GCC.AddMethod(() =>
             {
-                plusMesh.RotateZ(.1);
+                plusMesh.RotateZ(rotationSpeed);
                 //circleMesh.RotateY(.1);
 
                 if (diameterChanged)
                 {
                     circleScalar = diameterSlider.Value;
-                    var modelNorth = new Model(dataCircleNorth, 0, 0, 12);
+                    var modelNorth = new Model(dataCircleNorth, 0, 4.5, 12);
                     var modelEast = new Model(dataCircleEast, 4.5, 0, 12);
                     var modelSouth = new Model(dataCircleSouth, 0, -4.5, 12);
                     var modelWest = new Model(dataCircleWest, -4.5, 0, 12);
