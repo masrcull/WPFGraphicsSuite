@@ -40,11 +40,12 @@ namespace ModelRender.Models
         private DispatcherTimer _timer;
         private List<Action> _actions;
 
-        
+        public bool ClearOnDraw { get; set; } = true;
 
         private void OnTick(object sender, EventArgs e)
         {
-            Clear();
+            if (ClearOnDraw)
+                Clear();
             foreach (var action in _actions)
             {
                 action.Invoke();

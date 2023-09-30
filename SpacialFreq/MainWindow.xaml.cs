@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GraphicsCommon;
+using ModelRender.Models;
 
 namespace SpacialFreq
 {
@@ -21,11 +22,12 @@ namespace SpacialFreq
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Canvas mainStage;
 
+        GraphicContextControl GCC = new GraphicContextControl();
         public double WhiteLineMultiplier;
         public double GrayAmount;
-        public double[] Eye;
+
+        List<Model> models = new List<Model>();
 
         public Model cubeModel;
         public Model greyCube;
@@ -33,64 +35,71 @@ namespace SpacialFreq
         public MainWindow()
         {
             InitializeComponent();
-            mainStage = FindName("MainStage") as Canvas;
-            Eye = new double[] { 0, 0, 0 };
+
+            MainStage.Children.Add(GCC);
+
+            GCC.ClearOnDraw = false;
+
             WhiteLineMultiplier = lineAmountSlider.Value;
             GrayAmount = 127;
 
-            cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
+            cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json",new double[] { 0, 0, 13 });
             cubeModel.Scale(new double[] { 35, WhiteLineMultiplier, 0 });
-            cubeModel.Translate(new double[] { 0, 16.4, 0 });
+            cubeModel.Translate(new double[] { 0, 6.7, 0 });
 
-            greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
+            greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
             greyCube.Scale(new double[] { 35, 17, 0 });
-            
             greyCube.Translate(new double[] { 0, -9, 0 });
 
-            greyCube.DrawFaces(Brushes.Gray, mainStage, Eye);
-            cubeModel.DrawFaces(Brushes.White, mainStage, Eye);
-            //cubeModel.Translate(0, (-1 * 2 * WhiteLineMultiplier), 0);
-            cubeModel.DrawFaces(Brushes.White, MainStage, Eye);
+            greyCube.SetColor(128, 128, 128);
+            cubeModel.SetColor(255,0,0); 
 
-            var foo2 = WhiteLineMultiplier; 
+            GCC.AddModels(new List<Model> { cubeModel });
+            GCC.AddModels(new List<Model> { greyCube });
+
+            double currentY = 6.7;
 
             while (cubeModel.Centroid[1] > 0)
             {
-                cubeModel.Translate(0, (-1 * 2 * WhiteLineMultiplier), 0);
-                cubeModel.DrawFaces(Brushes.White, MainStage, Eye);
+                currentY = -(currentY - (1 * 2 * WhiteLineMultiplier));
+                var fuckoff = cubeModel.Centroid[1];
+                var tempModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
+                tempModel.Scale(new double[] { 35, WhiteLineMultiplier, 0 });
+                tempModel.Translate(0, currentY, 0);
+                cubeModel.Translate(0, currentY, 0);
+                models.Add(tempModel);
             }
 
-            var foo = LinearAlgebra.CalculateCentroid(cubeModel.Vertices);
-            Console.WriteLine("fuck");
+            GCC.AddModels(models);
 
+            GCC.Start();
         }
 
 
         public void DrawWhiteLines()
         {
-            if (mainStage != null)
+            if (GCC != null)
             {
-                mainStage.Children.Clear();
+                //GCC.Clear();
             }
-            cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", mainStage, new double[] { 0, 0, 13 });
+            cubeModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
             cubeModel.Scale(new double[] { 35, WhiteLineMultiplier, 0 });
             cubeModel.Translate(new double[] { 0, 17.4, 0 });
 
-            while (cubeModel.Centroid[1] > 0)
+            while (cubeModel.Centroid[1] < 1)
             {
-                cubeModel.Translate(0, (-1 * 2 * WhiteLineMultiplier), 0);
-                cubeModel.DrawFaces(Brushes.White, MainStage, Eye);
+                cubeModel.Translate(0, (1 * 2 * WhiteLineMultiplier), 0);
             }
-            if(greyCube != null)
-                greyCube.DrawFaces(new SolidColorBrush(Color.FromRgb((byte)GrayAmount, (byte)GrayAmount, (byte)GrayAmount)), mainStage, Eye);
+            //if(greyCube != null)
+            //    greyCube.DrawFaces(new SolidColorBrush(Color.FromRgb((byte)GrayAmount, (byte)GrayAmount, (byte)GrayAmount)), mainStage, Eye);
         }
 
         public void DrawGreyBox()
         {
-            if (greyCube != null)
-            {
-                greyCube.DrawFaces(new SolidColorBrush(Color.FromRgb((byte)GrayAmount, (byte)GrayAmount, (byte)GrayAmount)), mainStage, Eye);
-            }
+            //if (greyCube != null)
+            //{
+            //    greyCube.DrawFaces(new SolidColorBrush(Color.FromRgb((byte)GrayAmount, (byte)GrayAmount, (byte)GrayAmount)), mainStage, Eye);
+            //}
         }
 
         private void lineAmountSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -104,7 +113,7 @@ namespace SpacialFreq
         private void grayScaleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             GrayAmount = (double)e.NewValue;
-            DrawGreyBox();
+            //DrawGreyBox();
         }
     }
 }
