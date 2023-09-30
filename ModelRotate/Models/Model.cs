@@ -333,7 +333,7 @@ namespace GraphicsCommon
                 double yprime = y / z;
 
                 pictureVertices[i].X = contextControl.Width * ((xprime - xmin) / (xmax - xmin));
-                pictureVertices[i].Y = contextControl.Height * (yprime - ymin) / (ymax - ymin); 
+                pictureVertices[i].Y = contextControl.Height * (1 - (yprime - ymin) / (ymax - ymin)); 
 
             }
 

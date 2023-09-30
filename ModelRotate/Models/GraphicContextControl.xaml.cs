@@ -159,6 +159,39 @@ namespace ModelRender.Models
 
         }
 
+        public void CreateTriangleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        {
+            double[,] vertices = new double[3, 3];
+            int[] face = new int[] { 0, 1, 2 } ;
+
+            vertices[0,0] = 0;
+            vertices[0, 1] = radius;
+            vertices[0, 2] = 0;
+
+            vertices[1, 0] = radius;
+            vertices[1, 1] = -radius;
+            vertices[1, 2] = 0;
+
+            vertices[2, 0] = -radius;
+            vertices[2, 1] = -radius;
+            vertices[2, 2] = 0;
+
+            var exportModel = new ExportModel
+            {
+                vertices = ArrayHelper.ToJaggedArray(vertices),
+                edges = new int[][] { new int[] { 0, 0 } },
+                faces = new int[][] { face },
+                nVertices = (3),
+                nEdges = 1,
+                nFaces = 1,
+                color = new int[] { R, G, B }
+
+            };
+
+            Model.ExportModel(filePath, exportModel);
+
+        }
+
         public void Clear()
         {
             MainStage.Children.Clear();

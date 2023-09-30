@@ -13,24 +13,21 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#424242" HorizontalAlignment="Left" Width="230">
 
-            <Slider Width="Auto"  Margin="5,0,5,20"
-                x:Name="BallPosition" 
+            <Slider Width="Auto"  Margin="5,0,5,20" IsDirectionReversed="True"
+                x:Name="BallPositionX" 
+                Minimum="-3" 
+                Maximum="3" 
+                Value="0" 
+                TickFrequency=".5" 
+                IsSnapToTickEnabled="True" ValueChanged="posXSlider_ValueChanged"/>
+
+            <Slider Width="18"  Margin="5,0,5,20" Orientation="Vertical" HorizontalAlignment="Left" IsDirectionReversed="True"
+                x:Name="BallPositionY" 
                 Minimum="-1" 
                 Maximum="1" 
                 Value="0" 
                 TickFrequency=".5" 
-                IsSnapToTickEnabled="True" ValueChanged="speedSlider_ValueChanged"/>
-            <Label Content="Button Position X:  " HorizontalAlignment="Left" Width="104" RenderTransformOrigin="0.5,0.5">
-                <Label.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform AngleY="-0.455"/>
-                        <RotateTransform/>
-                        <TranslateTransform Y="-0.492"/>
-                    </TransformGroup>
-                </Label.RenderTransform>
-            </Label>
-            <Label Content="Label" HorizontalAlignment="Right" Width="99"/>
+                IsSnapToTickEnabled="True" ValueChanged="posYSlider_ValueChanged" Height="173"/>
 
 
 
