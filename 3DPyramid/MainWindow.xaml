@@ -5,36 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DPyramid"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <Page>
-            <Page.Resources>
-                <MeshGeometry3D Positions="0,75,0 -50,0,50 50,0,50" x:Key="RSRCmeshPyramid"
-                    TriangleIndices="0 1 2" />
-                <DiffuseMaterial x:Key="RSRCmaterialFront" Brush="yellow"/>
-                <DiffuseMaterial x:Key="RSRCmaterialBack" Brush="red"/>
-            </Page.Resources>
-            <Viewport3D Width="800" Height="800">
-                <Viewport3D.Camera>
-                    <PerspectiveCamera
-                        Position="57, 247, 41"
-                        LookDirection="-0.2, 0, -0.9"
-                        UpDirection="0,1,0"
-                        NearPlaneDistance="0.02" FarPlaneDistance="1000"
+        Title="MainWindow" Height="480" Width="600">
+    <Grid>
+        <Grid.Resources>
+            <MeshGeometry3D x:Key="RSRCmeshPyramid"
+                Positions="0,75,0 -50,0,50 50,0,50
+                          0,75,0 50,0,50 50,0,-50
+                          0,75,0 50,0,-50 -50,0,-50
+                          0,75,0 -50,0,-50 -50,0,50
+                          -50,0,-50 50,0,-50 50,0,50 -50,0,50"
+                TriangleIndices="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17" />
+            <DiffuseMaterial x:Key="RSRCmaterialFront" Brush="yellow" />
+            <DiffuseMaterial x:Key="RSRCmaterialBack" Brush="red" />
+        </Grid.Resources>
+        <Viewport3D Width="600" Height="480">
+            <Viewport3D.Camera>
+                <PerspectiveCamera
+                        Position="1, 125, 200"
+                        LookDirection="0, -0.5, -1"
+                    UpDirection="0,1,0"
+                    NearPlaneDistance="0.02" FarPlaneDistance="1000"
                         FieldOfView="45"
                         />
                     
-                </Viewport3D.Camera>
-                <ModelVisual3D>
-                    <ModelVisual3D.Content>
-                        <Model3DGroup>
-                            <AmbientLight  Color="White" />
-                            <GeometryModel3D Geometry="{StaticResource RSRCmeshPyramid}"
-                                Material="{StaticResource RSRCmaterialFront}"
-                                BackMaterial="{StaticResource RSRCmaterialBack}"/>
-                        </Model3DGroup>
-                    </ModelVisual3D.Content>
-                </ModelVisual3D>
-            </Viewport3D>
-        </Page>
-
+            </Viewport3D.Camera>
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <Model3DGroup>
+                        <AmbientLight Color="White" />
+                        <GeometryModel3D Geometry="{StaticResource RSRCmeshPyramid}"
+                            Material="{StaticResource RSRCmaterialFront}"
+                            BackMaterial="{StaticResource RSRCmaterialBack}" />
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+        </Viewport3D>
+    </Grid>
 </Window>

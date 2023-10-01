@@ -176,8 +176,6 @@ namespace GraphicsCommon
                 vertices[i, 1] *= scalingFactors[1];
                 vertices[i, 2] *= scalingFactors[2];
             }
-
-            Thread.Sleep(1000);
         }
 
         

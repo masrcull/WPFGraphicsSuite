@@ -18,19 +18,12 @@
                 <Slider Width="230"
                     x:Name="lineAmountSlider"
                     IsDirectionReversed="True"
-                    Minimum=".1" 
+                    Minimum=".05" 
                     Maximum="1" 
                     Value="0.5" 
-                    TickFrequency=".1" 
+                    TickFrequency=".05" 
                     IsSnapToTickEnabled="True" RenderTransformOrigin="0.5,0.5" ValueChanged="lineAmountSlider_ValueChanged">
-                    <Slider.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="-1"/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-180.062"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Slider.RenderTransform>
+
                 </Slider>
                 <Grid>
                     <Label Width="115" Content="Line Frequency: " HorizontalAlignment="Left"/>
