@@ -35,7 +35,7 @@
                     Minimum="0" 
                     Maximum="255" 
                     Value="127" 
-                    TickFrequency=".1" 
+                    TickFrequency="1" 
                     IsSnapToTickEnabled="True" ValueChanged="grayScaleSlider_ValueChanged"/>
             </StackPanel>
             <Canvas Grid.Column="1" Name="MainStage" HorizontalAlignment="Left"  Width="800" Height="800" Margin="0,0,0,-16" ClipToBounds="True">
