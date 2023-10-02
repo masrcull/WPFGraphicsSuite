@@ -34,6 +34,8 @@ namespace ModelRender.Models
         public int Width;
         public int Height;
 
+        public bool DirectionalLightEnabled = false;
+
         GraphicWindow GraphicWindow = new GraphicWindow();
 
         public SolidColorBrush Background;
@@ -75,7 +77,7 @@ namespace ModelRender.Models
             InitializeComponent();
             //MainStage = new Canvas();
             Eye = new double[] { 0, 0, 0 };
-            DirectionLight = new double[] { -1, -1, -1 };
+            DirectionLight = new double[] { 1, 1, 1 };
             Meshes = new List<Mesh>();
             Width = 800;
             Height = 800;

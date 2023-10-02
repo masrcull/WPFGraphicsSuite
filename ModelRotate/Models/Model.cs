@@ -378,14 +378,21 @@ namespace GraphicsCommon
 
                     }
 
-                    var faceNormal = CalculateNormal(Vertices, faceVertices);
-                    var intensity = LinearAlgebra.DotProduct(faceNormal, new double[] {0,-1,0});
+                    if (contextControl.DirectionalLightEnabled)
+                    {
+                        var faceNormal = CalculateNormal(Vertices, faceVertices);
+                        var intensity = LinearAlgebra.DotProduct(faceNormal, contextControl.DirectionLight);
+                        var adjustedColor = ColorHelper.CalculateIntensity(color[0], color[1], color[2], Math.Abs(intensity));
+                        ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb(adjustedColor[0], adjustedColor[1], adjustedColor[2])), contextControl.MainStage);
+                    }
+                    else
+                    {
+                        ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb((byte)this.color[0], (byte)this.color[1], (byte)this.color[2])), contextControl.MainStage);
+                    }
+                   
 
 
-
-                    var adjustedColor = ColorHelper.CalculateIntensity(color[0], color[1], color[2], Math.Abs(intensity));
-
-                    ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb(adjustedColor[0], adjustedColor[1], adjustedColor[2])), contextControl.MainStage);
+                    
                 }
             }
 

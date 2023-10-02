@@ -29,6 +29,7 @@ namespace ModelRotate
         {
             InitializeComponent();
             MainStage.Children.Add(GCC);
+            GCC.DirectionalLightEnabled = true;
 
             var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", new double[] { 0, 0, 13 });
             var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 0, 0, 13 });
@@ -61,7 +62,7 @@ namespace ModelRotate
                 red = ColorHelper.IncrementRgbByte(red, (byte)4, ref redIncrease);
                 blue = ColorHelper.IncrementRgbByte(blue, (byte)16, ref blueIncrease);
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
-                GCC.CreateGradientTriangle();
+                //GCC.CreateGradientTriangle();
                 //cubeModel.SetColor(red, green, blue);
                 mesh.RotateX((5 * Math.PI) / 180);
                 mesh.RotateZ((5 * Math.PI) / 180);
