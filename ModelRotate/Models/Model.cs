@@ -31,6 +31,18 @@ namespace GraphicsCommon
     public class Model
     {
         public double[,] Vertices { get; set; }
+        private int[][] _vertexFaceAdjacency;
+        public int[][] VertexFaceAdjacency
+        {
+            get
+            {
+                if(_vertexFaceAdjacency == null)
+                {
+                    CalculateAdjacentFaceMatrix();
+                }
+                return _vertexFaceAdjacency;
+            }
+        }
         public int[,] edges { get; set; }
         //public List<int>[] faces2 { get; set; }
         public int[][] faces2 { get; set; }
@@ -365,7 +377,15 @@ namespace GraphicsCommon
                         }
 
                     }
-                    ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb((byte)this.color[0], (byte)this.color[1], (byte)this.color[2])), contextControl.MainStage);
+
+                    var faceNormal = CalculateNormal(Vertices, faceVertices);
+                    var intensity = LinearAlgebra.DotProduct(faceNormal, new double[] {0,-1,0});
+
+
+
+                    var adjustedColor = ColorHelper.CalculateIntensity(color[0], color[1], color[2], Math.Abs(intensity));
+
+                    ShapeHelper.DrawPolygon(ArrayHelper.PointsToDoubleArray(points), new SolidColorBrush(Color.FromRgb(adjustedColor[0], adjustedColor[1], adjustedColor[2])), contextControl.MainStage);
                 }
             }
 
@@ -373,20 +393,86 @@ namespace GraphicsCommon
 
         }
 
+        public double[] CalculateNormal(double[,] verts, int[] faceVerts)
+        {
+            // Retrieve the vertices of the face
+            double[] p0 = { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
+            double[] p1 = { verts[faceVerts[1], 0], verts[faceVerts[1], 1], verts[faceVerts[1], 2] };
+            double[] p2 = { verts[faceVerts[2], 0], verts[faceVerts[2], 1], verts[faceVerts[2], 2] };
+
+            // Compute two vectors on the plane
+            double[] v = { (p1[0] - p0[0]), (p1[1] - p0[1]), (p1[2] - p0[2]) };
+            double[] w = { (p2[0] - p1[0]), (p2[1] - p1[1]), (p2[2] - p1[2]) };
+
+            // Return the cross product of v and w
+            return LinearAlgebra.CrossProduct(v, w);
+        }
+
         public bool IsFaceVisible(int[] faceVerts, double[,] verts, double[] Eye)
         {
+            double[] normal = CalculateNormal(verts, faceVerts);
 
-            double[] p0 = new double[] { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
-            double[] p1 = new double[] { verts[faceVerts[1], 0], verts[faceVerts[1], 1], verts[faceVerts[1], 2] };
-            double[] p2 = new double[] { verts[faceVerts[2], 0], verts[faceVerts[2], 1], verts[faceVerts[2], 2] };
+            double[] p0 = { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
 
-            double[] v = new double[] { (p1[0] - p0[0]), (p1[1] - p0[1]), (p1[2] - p0[2]) };
-            double[] w = new double[] { (p2[0] - p1[0]), (p2[1] - p1[1]), (p2[2] - p1[2]) };
-
-            var crossProduct = LinearAlgebra.CrossProduct(v, w);
-
-            return (LinearAlgebra.DotProduct(crossProduct, LinearAlgebra.SubtractVectors(p0, Eye)) < 0);
+            // Check the orientation of the face with respect to the viewpoint using the dot product
+            return (LinearAlgebra.DotProduct(normal, LinearAlgebra.SubtractVectors(p0, Eye)) < 0);
         }
+
+        private void CalculateAdjacentFaceMatrix()
+        {
+            int[,] adjacentFaces = new int[nVertices,nFaces];
+
+            for (int i = 0; i < faces2.Length; i++)
+            {
+                for(int j = 0; j < faces2[i].Length; j++)
+                {
+                    adjacentFaces[i,j] = faces2[i][j];
+                }
+                
+            }
+
+            _vertexFaceAdjacency = ArrayHelper.ToJaggedArray(adjacentFaces);
+        }
+
+        public double[] CalculateVertexNormal(int vertex)
+        {
+            double XSum = 0;
+            double YSum = 0;
+            double ZSum = 0;
+            int adjacentFaceCount = VertexFaceAdjacency[vertex].Length;
+
+            for (int i = 0; i < adjacentFaceCount; i++)
+            {
+                var tempNormal = CalculateNormal(Vertices, faces2[VertexFaceAdjacency[vertex][i]]);
+                XSum += tempNormal[0];
+                YSum += tempNormal[1];
+                ZSum += tempNormal[2];
+            }
+
+            return new double[] { XSum / adjacentFaceCount, YSum / adjacentFaceCount, ZSum / adjacentFaceCount };
+        }
+
+
+
+
+
+
+
+
+        //public bool IsFaceVisible(int[] faceVerts, double[,] verts, double[] Eye)
+        //{
+
+        //    double[] p0 = new double[] { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
+        //    double[] p1 = new double[] { verts[faceVerts[1], 0], verts[faceVerts[1], 1], verts[faceVerts[1], 2] };
+        //    double[] p2 = new double[] { verts[faceVerts[2], 0], verts[faceVerts[2], 1], verts[faceVerts[2], 2] };
+
+        //    double[] v = new double[] { (p1[0] - p0[0]), (p1[1] - p0[1]), (p1[2] - p0[2]) };
+        //    double[] w = new double[] { (p2[0] - p1[0]), (p2[1] - p1[1]), (p2[2] - p1[2]) };
+
+        //    var crossProduct = LinearAlgebra.CrossProduct(v, w);
+
+        //    return (LinearAlgebra.DotProduct(crossProduct, LinearAlgebra.SubtractVectors(p0, Eye)) < 0);
+        //}
 
 
 

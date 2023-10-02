@@ -18,7 +18,7 @@
             <DiffuseMaterial x:Key="RSRCmaterialFront" Brush="yellow" />
             <DiffuseMaterial x:Key="RSRCmaterialBack" Brush="red" />
         </Grid.Resources>
-        <Viewport3D Width="600" Height="480">
+        <Viewport3D Width="600" Height="480" Margin="0,0,0,-16">
             <Viewport3D.Camera>
                 <PerspectiveCamera
                         Position="1, 125, 200"
@@ -32,7 +32,8 @@
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <Model3DGroup>
-                        <AmbientLight Color="White" />
+                        <!--<AmbientLight Color="White" />-->
+                        <DirectionalLight Color="white" Direction="1, -1, -1" />
                         <GeometryModel3D Geometry="{StaticResource RSRCmeshPyramid}"
                             Material="{StaticResource RSRCmaterialFront}"
                             BackMaterial="{StaticResource RSRCmaterialBack}" />

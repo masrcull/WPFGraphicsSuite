@@ -28,6 +28,7 @@ namespace ModelRender.Models
         private DispatcherTimer timer;
         //public Canvas MainStage;
         public double[] Eye;
+        public double[] DirectionLight;
         public List<Mesh> Meshes;
 
         public int Width;
@@ -74,6 +75,7 @@ namespace ModelRender.Models
             InitializeComponent();
             //MainStage = new Canvas();
             Eye = new double[] { 0, 0, 0 };
+            DirectionLight = new double[] { -1, -1, -1 };
             Meshes = new List<Mesh>();
             Width = 800;
             Height = 800;
@@ -191,6 +193,34 @@ namespace ModelRender.Models
 
             Model.ExportModel(filePath, exportModel);
 
+        }
+
+        public void CreateGradientTriangle()
+        {
+            Polygon triangle = new Polygon();
+
+            // Define the triangle's points
+            triangle.Points.Add(new Point(50, 0));
+            triangle.Points.Add(new Point(0, 100));
+            triangle.Points.Add(new Point(100, 100));
+
+            // Create a RadialGradientBrush
+            RadialGradientBrush brush = new RadialGradientBrush();
+            brush.GradientOrigin = new Point(0.5, 0);
+            brush.Center = new Point(0.5, 0);
+            brush.RadiusX = 0.5;
+            brush.RadiusY = 1.0;
+
+            // Define GradientStops for the brush
+            brush.GradientStops.Add(new GradientStop(Colors.Red, 0.0));
+            brush.GradientStops.Add(new GradientStop(Colors.Green, 0.5));
+            brush.GradientStops.Add(new GradientStop(Colors.Blue, 1.0));
+
+            // Apply the brush to the triangle's Fill
+            triangle.Fill = brush;
+
+            // Add the triangle to a parent container (e.g., a Grid named 'LayoutRoot')
+            MainStage.Children.Add(triangle);
         }
 
         public void Clear()

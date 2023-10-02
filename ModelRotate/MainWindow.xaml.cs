@@ -23,22 +23,19 @@ namespace ModelRotate
     /// </summary>
     public partial class MainWindow : Window
     {
-        Canvas gp = null;
-        bool ready = false;
+        GraphicContextControl GCC = new GraphicContextControl();
 
         public MainWindow()
         {
             InitializeComponent();
-            gp = this.FindName("Paper") as Canvas;
+            MainStage.Children.Add(GCC);
 
-
-            //var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", gp, new double[] { 0, 0, 13 });
+            var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", new double[] { 0, 0, 13 });
             var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 0, 0, 13 });
             var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 3, 0, 13 });
             //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
-            double[] Eye = new double[3]
-            { 0, 0, 0 };
+            GCC.AddModels(new List<Model> { cubeModel } );
 
             bool redIncrease = true;
             bool greenIncrease = true;
@@ -47,6 +44,8 @@ namespace ModelRotate
             byte red = 64;
             byte green = 128;
             byte blue = 200;
+
+            var foo = cubeModel.VertexFaceAdjacency;
 
             var models = new List<Model> { plusModel2, plusModel };
             
@@ -57,36 +56,32 @@ namespace ModelRotate
             //mesh.RotateX(20);
             
 
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(16);  // roughly 60 FPS
-            timer.Tick += (s, e) =>
+            GCC.AddMethod( () =>
             {
                 red = ColorHelper.IncrementRgbByte(red, (byte)4, ref redIncrease);
                 blue = ColorHelper.IncrementRgbByte(blue, (byte)16, ref blueIncrease);
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
-
-                gp.Children.Clear();
-
-
+                GCC.CreateGradientTriangle();
+                //cubeModel.SetColor(red, green, blue);
                 mesh.RotateX((5 * Math.PI) / 180);
                 mesh.RotateZ((5 * Math.PI) / 180);
                 //plusModel.RotateZ((5 * Math.PI) / 180);
                 //plusModel.RotateZ((5 * Math.PI) / 180);
-                //cubeModel.RotateX((5 * Math.PI) / 180);
-                //cubeModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
+                cubeModel.RotateX((5 * Math.PI) / 180);
+                cubeModel.RotateY((5 * Math.PI) / 180);
+
 
                 //mesh.DrawMesh(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
 
-                ShapeHelper.DrawCircle(1, new SolidColorBrush(Colors.Red), gp);
                 //plusModel.DrawFaces(ColorHelper.CreateColorBrush(red, green, blue), gp, Eye);
                 //plusModel.DrawFaces(Brushes.Red, gp, Eye);
 
 
 
-            };
-            timer.Start();
+            });
+            GCC.Start();
 
-            ready = true; // Now we're ready to have sliders and buttons influence the display.
+            
             var one = 1;
         }
 
