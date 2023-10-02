@@ -35,6 +35,7 @@ namespace ShadowTrajectory
 
             MainStage.Children.Add(GCC);
 
+
             GCC.CreateCircleModel("C:\\ModelExports\\circley.json", .2, 128, 0, 0);
             GCC.CreateTriangleModel("C:\\ModelExports\\triangley.json", .2, 0, 128, 0);
 

@@ -46,7 +46,7 @@ namespace MotionBlindness
 
         double[,] OGVerts;
 
-        double rotationSpeed = .05;
+        double rotationSpeed = -.05;
 
         public MainWindow()
         {
@@ -77,7 +77,6 @@ namespace MotionBlindness
             GCC.AddMethod(() =>
             {
                 plusMesh.RotateZ(rotationSpeed);
-                //circleMesh.RotateY(.1);
 
                 if (diameterChanged)
                 {
@@ -94,11 +93,10 @@ namespace MotionBlindness
 
 
                     circleNorthMesh = new Mesh(new List<Model> { modelNorth, modelEast, modelSouth, modelWest });
-                    //circleNorthMesh.Scale(circleScalar);
+
                     if (RedSlider != null && GreenSlider != null && BlueSlider != null)
                     {
                         circleNorthMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
-                        //model.SetColor((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
                     }
 
                     diameterChanged = false;
@@ -109,7 +107,6 @@ namespace MotionBlindness
                 {
                     GCC.Meshes = new List<Mesh>();
                     var models = new List<Model>();
-
 
 
                     for (double i = plusRenderMin; i < plusRenderMax; i += distanceSlider.Value)
@@ -156,7 +153,7 @@ namespace MotionBlindness
 
         private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            rotationSpeed = speedSlider.Value;
+            rotationSpeed = -speedSlider.Value;
         }
 
         private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
