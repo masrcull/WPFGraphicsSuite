@@ -83,7 +83,7 @@ namespace ModelRender.Models
             Height = 800;
             MainStage.Width = Width;
             MainStage.Height = Height;
-            MainStage.Background = new SolidColorBrush(Colors.Black);
+            MainStage.Background = new SolidColorBrush(Colors.White);
 
             _actions = new List<Action>();
             _timer = new DispatcherTimer();
@@ -156,6 +156,41 @@ namespace ModelRender.Models
                 nEdges = 1,
                 nFaces = 1,
                 color = new int[] { R, G, B}
+
+            };
+
+            Model.ExportModel(filePath, exportModel);
+
+
+        }
+
+        public void CreateQuarterCircleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        {
+            var points = ShapeHelper.GenerateQuarterCirclePoints(radius, 4);
+            double[,] vertices = new double[points.Length, 3];
+            int[] face = new int[points.Length];
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                vertices[i, 0] = points[i][0];
+                vertices[i, 1] = points[i][1];
+                vertices[i, 2] = 0;
+            }
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                face[i] = i;
+            }
+
+            var exportModel = new ExportModel
+            {
+                vertices = ArrayHelper.ToJaggedArray(vertices),
+                edges = new int[][] { new int[] { 0, 0 } },
+                faces = new int[][] { face },
+                nVertices = (vertices.Length / 3),
+                nEdges = 1,
+                nFaces = 1,
+                color = new int[] { R, G, B }
 
             };
 

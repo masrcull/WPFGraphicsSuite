@@ -35,6 +35,11 @@ namespace GraphicsCommon
             return vector1.Zip(vector2, (v1, v2) => v1 + v2).ToArray();
         }
 
+        public static double DegreeToRadians(double degree)
+        {
+            return degree * Math.PI / 180;
+        }
+
         public static double[] Multiply(double[][] matrix, double[] vector)
         {
             if (matrix.Length != 3 || vector.Length != 3)
