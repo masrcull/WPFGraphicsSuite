@@ -66,12 +66,12 @@ namespace ModelRotate
                 var hellowurld = verticalSpace * i;
                 Model tempModel = new Model("C:\\ModelExports\\circley.json", new Vector3( 0, (verticalSpace * i), 4 ));
                 Model tempModel2 = new Model("C:\\ModelExports\\circley.json", new Vector3(0, (verticalSpace * i), 4));
-                //tempModel.RotateX(LinearAlgebra.DegreeToRadians(90));
-                //tempModel2.RotateX(LinearAlgebra.DegreeToRadians(270));
+                tempModel.RotateX(LinearAlgebra.DegreeToRadians(90));
+                tempModel2.RotateX(LinearAlgebra.DegreeToRadians(270));
                 tempModel.Scale(sphereRadi[i]);
                 tempModel2.Scale(sphereRadi[i]);
-                //models.Add(tempModel);
-                //models.Add(tempModel2);
+                models.Add(tempModel);
+                models.Add(tempModel2);
             }
 
             List<Vector3> faces = new List<Vector3>();

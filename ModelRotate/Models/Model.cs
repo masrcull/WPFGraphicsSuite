@@ -358,7 +358,7 @@ namespace GraphicsCommon
 
             Point[] pictureVertices = new Point[this.Vertices.Count];
             //double scale = 800;
-            for (int i = 0; i < this.Vertices.Count / 3; i++)
+            for (int i = 0; i < this.Vertices.Count; i++)
             {
                 double x = this.Vertices[i].X;
                 double y = this.Vertices[i].Y;
