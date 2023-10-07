@@ -77,12 +77,13 @@ namespace GraphicsCommon
 
         public static float CalculateDistance2D(float x1, float y1, float x2, float y2)
         {
-            double dx = x2 - x1;
-            double dy = y2 - y1;
+            float dx = x2 - x1;
+            float dy = y2 - y1;
+            var fo = (float)Math.Sqrt(dx * dx + dy * dy);
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public static float CalculateDistance2D(Vector3 point1, Vector3 point2) => CalculateDistance2D(point1.X, point1.Y, point2.X, point2.Z);
+        public static float CalculateDistance2D(Vector3 point1, Vector3 point2) => CalculateDistance2D(point1.X, point1.Y, point2.X, point2.Y);
 
 
         public static void DrawPolygon(Point[] points, SolidColorBrush color, GraphicContextControl gcc )
@@ -131,7 +132,7 @@ namespace GraphicsCommon
 
             for (int i = 0; i < quarterPoints.Count; i++)
             {
-                radi[i] = CalculateDistance2D(quarterPoints[i], new Vector3(0, quarterPoints[i ].Y, 0));
+                radi[i] = CalculateDistance2D(quarterPoints[i], new Vector3(0, quarterPoints[i].Y, 0));
             }
 
             return radi;
@@ -280,19 +281,19 @@ namespace GraphicsCommon
 
             List<Vector3> points = new List<Vector3>();
 
-            const double threshold = 1e-15; // Values below this (in absolute terms) are treated as 0.0.
+            //const float threshold = 1e-15f; // Values below this (in absolute terms) are treated as 0.0.
 
             for (int i = 0; i < numPoints; i++)
             {
-                double theta = (Math.PI / 2) * i / numPoints;
-                double x = radius * Math.Cos(theta);
-                double y = -radius * Math.Sin(theta);
+                float theta = (float)((Math.PI / 2) * i / numPoints);
+                float x = (float)(radius * Math.Cos(theta));
+                float y = (float)(-radius * Math.Sin(theta));
 
                 // Correcting tiny values close to zero
-                x = Math.Abs(x) < threshold ? 0.0 : x;
-                y = Math.Abs(y) < threshold ? 0.0 : y;
+                //x = Math.Abs(x) < threshold ? 0.0f : x;
+                //y = Math.Abs(y) < threshold ? 0.0f : y;
 
-                points.Add(new Vector3((float)x, (float)y, 0));
+                points.Add(new Vector3(x, y, 0));
             }
 
             return points;
