@@ -70,43 +70,70 @@ namespace ModelRotate
                 tempModel.Scale(sphereRadi[i]);
                 tempModel2.Scale(sphereRadi[i]);
                 models.Add(tempModel);
-                models.Add(tempModel2);
+                //models.Add(tempModel2);
             }
 
-            double[,] face = new double[4,3];
+            List<double[]> faces = new List<double[]>();
+            List<int[]> faceVertexMap = new List<int[]>();
+            var coordMap = new CoordinateMapper();
 
-            face[0, 0] = models[0].Vertices[0, 0];
-            face[0, 1] = models[0].Vertices[0, 1];
-            face[0, 2] = models[0].Vertices[0, 2];
+            for (int i = 0; i < models.Count - 1; i++)
+            {
+                for (int j = 0; j < 8; j++)
+            {
+               
+                
+                
+                
 
-            face[1, 0] = models[0].Vertices[1, 0];
-            face[1, 1] = models[0].Vertices[1, 1];
-            face[1, 2] = models[0].Vertices[1, 2];
 
-            face[2, 0] = models[2].Vertices[1, 0];
-            face[2, 1] = models[2].Vertices[1, 1];
-            face[2, 2] = models[2].Vertices[1, 2];
+                    //double[][] face = new double[4, 3];
+                    int[] faceVertex = new int[4];
 
-            face[3, 0] = models[2].Vertices[0, 0];
-            face[3, 1] = models[2].Vertices[0, 1];
-            face[3, 2] = models[2].Vertices[0, 2];
+
+                    faces.Add(new double[] { models[i].Vertices[j, 0], models[i].Vertices[j, 1], models[i].Vertices[j, 2] });
+                    faceVertex[0] = coordMap.GetOrAdd(i, j);
+
+
+                    faces.Add(new double[] { models[i].Vertices[j + 1, 0], models[i].Vertices[j + 1, 1], models[i].Vertices[j + 1, 2] });
+                    faceVertex[1] = coordMap.GetOrAdd(i, j + 1);
+
+                    faces.Add(new double[] { models[i + 1].Vertices[j + 1, 0], models[i + 1].Vertices[j + 1, 1], models[i + 1].Vertices[j + 1, 2] });
+                    faceVertex[2] = coordMap.GetOrAdd(i + 1, j + 1);
+
+                    faces.Add(new double[] { models[i + 1].Vertices[j, 0], models[i + 1].Vertices[j, 1], models[i + 1].Vertices[j, 2] });
+                    faceVertex[3] = coordMap.GetOrAdd(i + 1, j);
+
+
+
+
+
+
+
+                    faceVertexMap.Add(faceVertex);
+
+                }
+            }
+
+
+
 
             var exportModel = new ExportModel()
             {
-                faces = new int[1][] { new int[] { 0, 1, 2, 3 } },
-                vertices = ArrayHelper.ToJaggedArray(face),
+                faces = faceVertexMap.ToArray(),
+                vertices = faces.ToArray(),
                 edges = new int[1][] { new int[] { 0, 0 } },
                 nEdges = 1,
-                nVertices = 4,
-                nFaces = 1,
-                color = new int[] { 255, 0 , 128 }
+                nVertices = faces.Count,
+                nFaces = faceVertexMap.Count,
+                color = new int[] { 255, 0, 128 }
             };
 
             Model.ExportModel("C:\\ModelExports\\sphere_panel.json", exportModel);
             Model spherePanel = new Model("C:\\ModelExports\\sphere_panel.json", new double[] {0, 0, 0});
             //spherePanel.Scale(3, 3, 3);
             models.Add(spherePanel);
-
+            spherePanel.Scale(1,6,1);
             var coicles = GCC.AddModels(models);
 
 
