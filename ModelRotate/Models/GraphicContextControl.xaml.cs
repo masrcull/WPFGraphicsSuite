@@ -155,7 +155,7 @@ namespace ModelRender.Models
                 vertices = ArrayHelper.Vec3ToFloat2DArray(vertices),
                 edges = new int[][] { new int[] { 0, 0 } },
                 faces = new int[][] { face },
-                nVertices = (vertices.Count / 3),
+                nVertices = (vertices.Count),
                 nEdges = 1,
                 nFaces = 1,
                 color = new int[] { R, G, B}
