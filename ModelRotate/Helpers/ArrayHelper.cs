@@ -5,11 +5,20 @@ using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace ModelRender.Helpers
 {
     public class ArrayHelper
     {
+
+        public static List<Vector3> Double2DToVector3List(double[][] data)
+        {
+            return data.Where(point => point.Length >= 3)
+                       .Select(point => new Vector3((float)point[0], (float)point[1], (float)point[2]))
+                       .ToList();
+        }
+
         public static double[][] ToJaggedArray(double[,] twoDArray)
         {
             int rows = twoDArray.GetLength(0);
@@ -107,6 +116,16 @@ namespace ModelRender.Helpers
             }
 
             return points;
+        }
+
+        public static double[][] Vec3ToDouble2DArray(List<Vector3> vectors)
+        {
+            return vectors.Select(v => new double[] { v.X, v.Y, v.Z }).ToArray();
+        }
+
+        public static float[][] Vec3ToFloat2DArray(List<Vector3> vectors)
+        {
+            return vectors.Select(v => new float[] { v.X, v.Y, v.Z }).ToArray();
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,8 +28,8 @@ namespace ModelRender.Models
     {
         private DispatcherTimer timer;
         //public Canvas MainStage;
-        public double[] Eye;
-        public double[] DirectionLight;
+        public Vector3 Eye;
+        public Vector3 DirectionLight;
         public List<Mesh> Meshes;
 
         public int Width;

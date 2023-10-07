@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,7 +74,7 @@ namespace ModelRotate
                 //models.Add(tempModel2);
             }
 
-            List<double[]> faces = new List<double[]>();
+            List<Vector3> faces = new List<Vector3>();
             List<int[]> faceVertexMap = new List<int[]>();
             var coordMap = new CoordinateMapper();
 
@@ -91,17 +92,17 @@ namespace ModelRotate
                     int[] faceVertex = new int[4];
 
 
-                    faces.Add(new double[] { models[i].Vertices[j, 0], models[i].Vertices[j, 1], models[i].Vertices[j, 2] });
+                    faces.Add(new Vector3(models[i].Vertices[j].X, models[i].Vertices[j].Y, models[i].Vertices[j].Z));
                     faceVertex[0] = coordMap.GetOrAdd(i, j);
 
 
-                    faces.Add(new double[] { models[i].Vertices[j + 1, 0], models[i].Vertices[j + 1, 1], models[i].Vertices[j + 1, 2] });
+                    faces.Add(new Vector3(models[i].Vertices[j + 1].X, models[i].Vertices[j + 1].Y, models[i].Vertices[j + 1].Z));
                     faceVertex[1] = coordMap.GetOrAdd(i, j + 1);
 
-                    faces.Add(new double[] { models[i + 1].Vertices[j + 1, 0], models[i + 1].Vertices[j + 1, 1], models[i + 1].Vertices[j + 1, 2] });
+                    faces.Add(new Vector3(models[i + 1].Vertices[j + 1].X, models[i + 1].Vertices[j + 1].Y, models[i + 1].Vertices[j + 1].Z) );
                     faceVertex[2] = coordMap.GetOrAdd(i + 1, j + 1);
 
-                    faces.Add(new double[] { models[i + 1].Vertices[j, 0], models[i + 1].Vertices[j, 1], models[i + 1].Vertices[j, 2] });
+                    faces.Add(new Vector3(models[i + 1].Vertices[j].X, models[i + 1].Vertices[j].Y, models[i + 1].Vertices[j].Z));
                     faceVertex[3] = coordMap.GetOrAdd(i + 1, j);
 
 
@@ -121,7 +122,7 @@ namespace ModelRotate
             var exportModel = new ExportModel()
             {
                 faces = faceVertexMap.ToArray(),
-                vertices = faces.ToArray(),
+                vertices = ArrayHelper.Vec3ToDouble2DArray(faces),
                 edges = new int[1][] { new int[] { 0, 0 } },
                 nEdges = 1,
                 nVertices = faces.Count,

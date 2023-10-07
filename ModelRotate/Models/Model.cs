@@ -13,12 +13,13 @@ using ModelRender.Helpers;
 using System.Windows.Shapes;
 using Microsoft.VisualBasic;
 using ModelRender.Models;
+using System.Numerics;
 
 namespace GraphicsCommon
 {
     public class ExportModel
     {
-        public double[][] vertices { get; set; }
+        public float[][] vertices { get; set; }
         public int[][] edges { get; set; }
         public int[][] faces { get; set; }
         public int nVertices { get; set; }
@@ -30,7 +31,7 @@ namespace GraphicsCommon
 
     public class Model
     {
-        public double[,] Vertices { get; set; }
+        public List<Vector3> Vertices { get; set; }
         private int[][] _vertexFaceAdjacency;
         public int[][] VertexFaceAdjacency
         {
@@ -52,7 +53,7 @@ namespace GraphicsCommon
         public int nFaces { get; set; }
         public int[] color { get; set; }
         public Canvas MainStage { get; set; }
-        public double[] Centroid {
+        public Vector3 Centroid {
             get 
             {
                 return LinearAlgebra.CalculateCentroid(this.Vertices);
@@ -64,13 +65,13 @@ namespace GraphicsCommon
 
         }
 
-        public Model(string filePath, double X, double Y, double Z) : this(filePath, new double[] { X, Y, Z}) { }
+        public Model(string filePath, float X, float Y, float Z) : this(filePath, new Vector3( X, Y, Z)) { }
 
-        public Model(string filePath, double[] initialCoordinates = null)
+        public Model(string filePath, Vector3? initialCoordinates = null)
         {
             if (initialCoordinates == null)
             {
-                initialCoordinates = new double[] { 0, 0, 0 };
+                initialCoordinates = new Vector3(0, 0, 0 );
             }
 
 
@@ -80,7 +81,8 @@ namespace GraphicsCommon
             this.nVertices = modelData.nVertices;
             this.nEdges = modelData.nEdges;
             this.nFaces = modelData.nFaces;
-            Vertices = new double[this.nVertices, 3];
+            Vertices = new List<Vector3>();
+            //Vertices = new double[this.nVertices, 3];
             edges = new int[this.nEdges, 2];
             faces = new int[this.nFaces, 4];
 
@@ -93,10 +95,13 @@ namespace GraphicsCommon
 
             for (int i = 0; i < modelData.nVertices; i++)
             {
-                for (int j = 0; j < 3; j++)
-                {
-                    this.Vertices[i, j] = modelData.vertices[i][j];
-                }
+
+                this.Vertices = ArrayHelper.Double2DToVector3List(modelData.vertices);
+
+                //for (int j = 0; j < 3; j++)
+                //{
+                //    this.Vertices[i, j] = modelData.vertices[i][j];
+                //}
             }
 
             for (int i = 0; i < modelData.edges.Length; i++)
@@ -117,26 +122,26 @@ namespace GraphicsCommon
                 }
             }
 
-            this.Translate(initialCoordinates);
+            this.Translate(initialCoordinates.Value);
 
 
         }
 
-        public Model(ModelData modelData, double? X = null, double? Y = null, double? Z = null )
+        public Model(ModelData modelData, float? X = null, float? Y = null, float? Z = null )
         {
-            double[] initialCoordinates;
+            Vector3 initialCoordinates;
             if (X == null || Y == null || Z == null)
             {
-                initialCoordinates = new double[] { 0, 0, 0 };
+                initialCoordinates = new Vector3( 0, 0, 0 );
             }
             else
-                initialCoordinates = new double[] { (double)X, (double)Y, (double)Z };
+                initialCoordinates = new Vector3( X.Value, Y.Value, Z.Value);
 
 
             this.nVertices = modelData.nVertices;
             this.nEdges = modelData.nEdges;
             this.nFaces = modelData.nFaces;
-            Vertices = new double[this.nVertices, 3];
+            Vertices = new List<Vector3>();
             edges = new int[this.nEdges, 2];
             faces = new int[this.nFaces, 4];
 
@@ -149,10 +154,11 @@ namespace GraphicsCommon
 
             for (int i = 0; i < modelData.nVertices; i++)
             {
-                for (int j = 0; j < 3; j++)
-                {
-                    this.Vertices[i, j] = modelData.vertices[i][j];
-                }
+                this.Vertices = ArrayHelper.Double2DToVector3List(modelData.vertices);
+                //for (int j = 0; j < 3; j++)
+                //{
+                //    this.Vertices[i, j] = modelData.vertices[i][j];
+                //}
             }
 
             for (int i = 0; i < modelData.edges.Length; i++)
@@ -190,7 +196,7 @@ namespace GraphicsCommon
             return modelData;
         }
 
-        public static Model CreateModel(string filePath, double[] initialCoordinates, Canvas mainStage)
+        public static Model CreateModel(string filePath, Vector3 initialCoordinates, Canvas mainStage)
         {
             var model = new Model("filePath");
             model.Translate(initialCoordinates);
@@ -200,7 +206,7 @@ namespace GraphicsCommon
 
         public Model(int nvertices, int nedges, int nfaces)
         {
-            Vertices = new double[nvertices, 3];
+            Vertices = new List<Vector3>();
             edges = new int[nedges, 2];
             faces = new int[nfaces, 4];
             nVertices = nvertices;
@@ -217,14 +223,14 @@ namespace GraphicsCommon
                 nVertices = model.nVertices,
                 edges = ArrayHelper.ToJaggedArray(model.edges),
                 faces = model.faces2,
-                vertices = ArrayHelper.ToJaggedArray(model.Vertices)
+                vertices = ArrayHelper.Vec3ToFloat2DArray(model.Vertices)
             };
             return exportModel;
         }
 
         public void ExportModel(string filePath)
         {
-            var jagged = ArrayHelper.ToJaggedArray(this.Vertices);
+            var jagged = ArrayHelper.Vec3ToDouble2DArray(this.Vertices);
 
             var exportModel = ToExportModel(this);
             var stringy = JsonSerializer.Serialize(exportModel/*, new JsonSerializerOptions { WriteIndented = true }*/);
@@ -239,74 +245,89 @@ namespace GraphicsCommon
             File.WriteAllText(filePath, stringy);
         }
 
-        public void RotateX(double radians, double[] centroid = null)
-        {
-            if(centroid == null)
-                centroid = LinearAlgebra.CalculateCentroid(Vertices);
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
-            for (int i = 0; i < nVertices; i++)
-            {
-                var foo = LinearAlgebra.RotateAroundX(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
+        //public void RotateX(double radians, Vector3? centroid = null)
+        //{
+        //    if(centroid == null)
+        //        centroid = LinearAlgebra.CalculateCentroid(Vertices);
+        //    LinearAlgebra.TranslateVertices(Vertices, new Vector3( -centroid.Value.X, -centroid.Value.Y, -centroid.Value.Y ));
+        //    for (int i = 0; i < nVertices; i++)
+        //    {
+        //        var vertex = LinearAlgebra.RotateAroundX(new Vector3(Vertices[i].X, Vertices[i].Y, Vertices[i].Z ), radians);
 
-                Vertices[i, 0] = foo[0];
-                Vertices[i, 1] = foo[1];
-                Vertices[i, 2] = foo[2];
-            }
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
-        }
+        //        Vertices[i].X = vertex[0];
+        //        Vertices[i].Y = vertex[1];
+        //        Vertices[i].Z = vertex[2];
+        //    }
+        //    LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+        //}
 
-        public void RotateY(double radians, double[] centroid = null)
-        {
-            if (centroid == null)
-                centroid = LinearAlgebra.CalculateCentroid(Vertices);
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
-            for (int i = 0; i < nVertices; i++)
-            {
-                var foo = LinearAlgebra.RotateAroundY(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
-
-                Vertices[i, 0] = foo[0];
-                Vertices[i, 1] = foo[1];
-                Vertices[i, 2] = foo[2];
-            }
-            LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
-        }
-
-        public void RotateZ(double radians, double[] centroid = null, bool moveToOrigin = true)
+        public void RotateX(double radians, Vector3? centroid = null)
         {
             if (centroid == null)
                 centroid = LinearAlgebra.CalculateCentroid(Vertices);
-            if (moveToOrigin) 
-                LinearAlgebra.TranslateVertices(Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
+
+            LinearAlgebra.TranslateVertices(Vertices, new Vector3(-centroid.Value.X, -centroid.Value.Y, -centroid.Value.Z));
+
+            for (int i = 0; i < Vertices.Count; i++)
+            {
+                var vertex = LinearAlgebra.RotateAroundX(new Vector3(Vertices[i].X, Vertices[i].Y, Vertices[i].Z), radians);
+
+                Vector3 modifiedVertex = Vertices[i];
+                modifiedVertex.X = vertex.X;
+                modifiedVertex.Y = vertex.Y;
+                modifiedVertex.Z = vertex.Z;
+                Vertices[i] = modifiedVertex;
+            }
+
+            LinearAlgebra.TranslateVertices(Vertices, new Vector3(centroid.Value.X, centroid.Value.Y, centroid.Value.Z));
+        }
+
+        public void RotateY(double radians, Vector3? centroid = null)
+        {
+            if (centroid == null)
+                centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            LinearAlgebra.TranslateVertices(Vertices, new Vector3(-centroid.Value.X, -centroid.Value.Y, -centroid.Value.Z));
             for (int i = 0; i < nVertices; i++)
             {
-                var foo = LinearAlgebra.RotateAroundZ(new double[] { Vertices[i, 0], Vertices[i, 1], Vertices[i, 2] }, radians);
-
-                Vertices[i, 0] = foo[0];
-                Vertices[i, 1] = foo[1];
-                Vertices[i, 2] = foo[2];
+                Vector3 vertex = LinearAlgebra.RotateAroundY(Vertices[i], radians);
+                Vertices[i] = vertex;  // Assign the entire vector back into the list
             }
-            if (moveToOrigin) 
-                LinearAlgebra.TranslateVertices(Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+            LinearAlgebra.TranslateVertices(Vertices, centroid.Value);
         }
 
-        public void Scale(double X, double Y, double Z)
+        public void RotateZ(double radians, Vector3? centroid = null, bool moveToOrigin = true)
         {
-            Scale(new double[] { X, Y, Z });
+            if (centroid == null)
+                centroid = LinearAlgebra.CalculateCentroid(Vertices);
+            if (moveToOrigin)
+                LinearAlgebra.TranslateVertices(Vertices, new Vector3(-centroid.Value.X, -centroid.Value.Y, -centroid.Value.Z));
+            for (int i = 0; i < nVertices; i++)
+            {
+                Vector3 vertex = LinearAlgebra.RotateAroundZ(Vertices[i], radians);
+                Vertices[i] = vertex;  // Assign the entire vector back into the list
+            }
+            if (moveToOrigin)
+                LinearAlgebra.TranslateVertices(Vertices, centroid.Value);
         }
 
-        public void Scale(double scalar) => Scale(scalar, scalar, scalar);
+        public void Scale(float X, float Y, float Z)
+        {
+            Scale(new Vector3( X, Y, Z ));
+        }
 
-        public void Scale(double[] scalars)
+        public void Scale(float scalar) => Scale(scalar, scalar, scalar);
+
+        public void Scale(Vector3 scalars)
         { 
             // move model to origin
             var centroid = LinearAlgebra.CalculateCentroid(this.Vertices);
-            LinearAlgebra.TranslateVertices(this.Vertices, new double[] { -centroid[0], -centroid[1], -centroid[2] });
+            LinearAlgebra.TranslateVertices(this.Vertices, new Vector3 ( -centroid.X, -centroid.Y, -centroid.Z ));
 
             // model scaled
-            LinearAlgebra.ScaleVertices(this.Vertices, new double[] { scalars[0], scalars[1], scalars[2] });
+            LinearAlgebra.ScaleVertices(this.Vertices, new Vector3(scalars.X, scalars.Y, scalars.Z ));
 
             // return to original position
-            LinearAlgebra.TranslateVertices(this.Vertices, new double[] { centroid[0], centroid[1], centroid[2] });
+            LinearAlgebra.TranslateVertices(this.Vertices, new Vector3(centroid.X, centroid.Y, centroid.Z ));
         }
 
         public void SetColor(int R, int G, int B)
@@ -314,14 +335,14 @@ namespace GraphicsCommon
             color = new int[] { R, G, B };
         }
 
-        public void Translate(double[] coordinates)
+        public void Translate(Vector3 coordinates)
         {
             LinearAlgebra.TranslateVertices(this.Vertices, coordinates);
         }
 
-        public void Translate(double x, double y, double z)
+        public void Translate(float x, float y, float z)
         {
-            Translate(new double[] { x, y, z });
+            Translate(new Vector3(x, y, z ));
         }
 
         public void DrawFaces(GraphicContextControl contextControl)
@@ -333,15 +354,15 @@ namespace GraphicsCommon
             double ymin = -0.5;
             double ymax = 0.5;
 
-            var foo = this.Vertices.Length;
+            var foo = this.Vertices.Count;
 
-            Point[] pictureVertices = new Point[this.Vertices.Length];
+            Point[] pictureVertices = new Point[this.Vertices.Count];
             //double scale = 800;
-            for (int i = 0; i < this.Vertices.Length / 3; i++)
+            for (int i = 0; i < this.Vertices.Count / 3; i++)
             {
-                double x = this.Vertices[i, 0];
-                double y = this.Vertices[i, 1];
-                double z = this.Vertices[i, 2];
+                double x = this.Vertices[i].X;
+                double y = this.Vertices[i].Y;
+                double z = this.Vertices[i].Z;
                 double xprime = x / z;
                 double yprime = y / z;
 
@@ -400,26 +421,26 @@ namespace GraphicsCommon
 
         }
 
-        public double[] CalculateNormal(double[,] verts, int[] faceVerts)
+        public Vector3 CalculateNormal(List<Vector3> verts, int[] faceVerts)
         {
             // Retrieve the vertices of the face
-            double[] p0 = { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
-            double[] p1 = { verts[faceVerts[1], 0], verts[faceVerts[1], 1], verts[faceVerts[1], 2] };
-            double[] p2 = { verts[faceVerts[2], 0], verts[faceVerts[2], 1], verts[faceVerts[2], 2] };
+            var p0 = new Vector3( verts[faceVerts[0]].X, verts[faceVerts[0]].Y, verts[faceVerts[0]].Z );
+            var p1 = new Vector3(verts[faceVerts[1]].X, verts[faceVerts[1]].Y, verts[faceVerts[1]].Z );
+            var p2 = new Vector3(verts[faceVerts[2]].X, verts[faceVerts[2]].Y, verts[faceVerts[2]].Z);
 
             // Compute two vectors on the plane
-            double[] v = { (p1[0] - p0[0]), (p1[1] - p0[1]), (p1[2] - p0[2]) };
-            double[] w = { (p2[0] - p1[0]), (p2[1] - p1[1]), (p2[2] - p1[2]) };
+            var v = new Vector3((p1.X - p0.X), (p1.Y - p0.Y), (p1.Z - p0.Z) );
+            var w = new Vector3( (p2.X - p1.X), (p2.Y - p1.Y), (p2.Z - p1.Z) );
 
             // Return the cross product of v and w
             return LinearAlgebra.CrossProduct(v, w);
         }
 
-        public bool IsFaceVisible(int[] faceVerts, double[,] verts, double[] Eye)
+        public bool IsFaceVisible(int[] faceVerts, List<Vector3> verts, Vector3 Eye)
         {
-            double[] normal = CalculateNormal(verts, faceVerts);
+            Vector3 normal = CalculateNormal(verts, faceVerts);
 
-            double[] p0 = { verts[faceVerts[0], 0], verts[faceVerts[0], 1], verts[faceVerts[0], 2] };
+            Vector3 p0 = new Vector3(verts[faceVerts[0]].X, verts[faceVerts[0]].Y, verts[faceVerts[0]].Z );
 
             // Check the orientation of the face with respect to the viewpoint using the dot product
             return (LinearAlgebra.DotProduct(normal, LinearAlgebra.SubtractVectors(p0, Eye)) < 0);
@@ -441,22 +462,22 @@ namespace GraphicsCommon
             _vertexFaceAdjacency = ArrayHelper.ToJaggedArray(adjacentFaces);
         }
 
-        public double[] CalculateVertexNormal(int vertex)
+        public Vector3 CalculateVertexNormal(int vertex)
         {
-            double XSum = 0;
-            double YSum = 0;
-            double ZSum = 0;
+            float XSum = 0;
+            float YSum = 0;
+            float ZSum = 0;
             int adjacentFaceCount = VertexFaceAdjacency[vertex].Length;
 
             for (int i = 0; i < adjacentFaceCount; i++)
             {
                 var tempNormal = CalculateNormal(Vertices, faces2[VertexFaceAdjacency[vertex][i]]);
-                XSum += tempNormal[0];
-                YSum += tempNormal[1];
-                ZSum += tempNormal[2];
+                XSum += tempNormal.X;
+                YSum += tempNormal.Y;
+                ZSum += tempNormal.Z;
             }
 
-            return new double[] { XSum / adjacentFaceCount, YSum / adjacentFaceCount, ZSum / adjacentFaceCount };
+            return new Vector3(XSum / adjacentFaceCount, YSum / adjacentFaceCount, ZSum / adjacentFaceCount );
         }
 
 

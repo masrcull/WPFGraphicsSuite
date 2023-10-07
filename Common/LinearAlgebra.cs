@@ -4,35 +4,14 @@ namespace GraphicsCommon
 {
     public class LinearAlgebra
     {
-        public static double[] SubtractVectors(double[] vector1, double[] vector2)
+        public static Vector3 SubtractVectors(Vector3 v1, Vector3 v2)
         {
-            double[] result = new double[vector1.Length];
-            if (vector1 != null && vector2 != null)
-            {
-                if (vector1.Length != vector2.Length)
-                {
-                    throw new ArgumentException("Vectors must have the same dimension.");
-                }
-
-                result = new double[vector1.Length];
-
-                for (int i = 0; i < vector1.Length; i++)
-                {
-                    result[i] = vector1[i] - vector2[i];
-                }
-            }
-
-            return result;
+            return Vector3.Subtract(v1, v2);
         }
 
-        public static double[] AddVectors(double[] vector1, double[] vector2)
+        public static Vector3 AddVectors(Vector3 vector1, Vector3 vector2)
         {
-            if (vector1.Length != vector2.Length)
-            {
-                throw new ArgumentException("Vectors must have the same length.");
-            }
-
-            return vector1.Zip(vector2, (v1, v2) => v1 + v2).ToArray();
+            return Vector3.Add(vector1, vector2);
         }
 
         public static double DegreeToRadians(double degree)
@@ -40,150 +19,121 @@ namespace GraphicsCommon
             return degree * Math.PI / 180;
         }
 
-        public static double[] Multiply(double[][] matrix, double[] vector)
+        public static Vector3 Multiply(List<Vector3> matrix, Vector3 vector)
         {
-            if (matrix.Length != 3 || vector.Length != 3)
-            {
-                throw new ArgumentException("Invalid dimensions.");
-            }
+            Vector3 result = new Vector3();
 
-            double[] result = new double[3];
-
-            for (int i = 0; i < 3; i++)
-            {
-                result[i] = matrix[i][0] * vector[0] + matrix[i][1] * vector[1] + matrix[i][2] * vector[2];
-            }
+            result.X = matrix[0].X * vector.X + matrix[0].Y * vector.Y + matrix[0].Z * vector.Z;
+            result.Y = matrix[1].X * vector.X + matrix[1].Y * vector.Y + matrix[1].Z * vector.Z;
+            result.Z = matrix[2].X * vector.X + matrix[2].Y * vector.Y + matrix[2].Z * vector.Z;
 
             return result;
         }
 
-        public static double[] RotateAroundX(double[] vertex, double angle)
+        public static Vector3 RotateAroundX(Vector3 vertex, double angle)
         {
-            if (vertex.Length != 3)
-            {
-                throw new ArgumentException("Invalid vertex dimensions.");
-            }
-
             // Rotation matrix for X axis
-            double[][] rotationMatrix = new double[3][];
-            rotationMatrix[0] = new double[] { 1, 0, 0 };
-            rotationMatrix[1] = new double[] { 0, Math.Cos(angle), -Math.Sin(angle) };
-            rotationMatrix[2] = new double[] { 0, Math.Sin(angle), Math.Cos(angle) };
+            List<Vector3> rotationMatrix = new List<Vector3>();
+            rotationMatrix.Add(new Vector3(1, 0, 0 ));
+            rotationMatrix.Add(new Vector3( 0, (float)Math.Cos(angle), (float)-Math.Sin(angle)));
+            rotationMatrix.Add(new Vector3 ( 0, (float)Math.Sin(angle), (float)Math.Cos(angle)));
 
             return Multiply(rotationMatrix, vertex);
         }
 
-        public static double[] RotateAroundY(double[] vertex, double angle)
+        public static Vector3 RotateAroundY(Vector3 vertex, double angle)
         {
-            if (vertex.Length != 3)
-            {
-                throw new ArgumentException("Invalid vertex dimensions.");
-            }
-
             // Rotation matrix for Y axis
-            double[][] rotationMatrix = new double[3][];
-            rotationMatrix[0] = new double[] { Math.Cos(angle), 0, Math.Sin(angle) };
-            rotationMatrix[1] = new double[] { 0, 1, 0 };
-            rotationMatrix[2] = new double[] { -Math.Sin(angle), 0, Math.Cos(angle) };
+            List<Vector3> rotationMatrix = new List<Vector3>();
+            rotationMatrix.Add(new Vector3 ((float)Math.Cos(angle), 0, (float)Math.Sin(angle) ));
+            rotationMatrix.Add(new Vector3( 0, 1, 0 ));
+            rotationMatrix.Add(new Vector3( (float)-Math.Sin(angle), 0, (float)Math.Cos(angle) ));
 
             return Multiply(rotationMatrix, vertex);
         }
 
-        public static double[] RotateAroundZ(double[] vertex, double angle)
+        public static Vector3 RotateAroundZ(Vector3 vertex, double angle)
         {
-            if (vertex.Length != 3)
-            {
-                throw new ArgumentException("Invalid vertex dimensions.");
-            }
-
             // Rotation matrix for Z axis
-            double[][] rotationMatrix = new double[3][];
-            rotationMatrix[0] = new double[] { Math.Cos(angle), -Math.Sin(angle), 0 };
-            rotationMatrix[1] = new double[] { Math.Sin(angle), Math.Cos(angle), 0 };
-            rotationMatrix[2] = new double[] { 0, 0, 1 };
+            List<Vector3> rotationMatrix = new List<Vector3>();
+            rotationMatrix.Add (new Vector3((float)Math.Cos(angle), (float)-Math.Sin(angle), 0 ));
+            rotationMatrix.Add(new Vector3( (float)Math.Sin(angle), (float)Math.Cos(angle), 0 ));
+            rotationMatrix.Add(new Vector3( 0, 0, 1 ));
 
             return Multiply(rotationMatrix, vertex);
         }
 
-        public static double[] CrossProduct(double[] vec1, double[] vec2)
+        public static Vector3 CrossProduct(Vector3 vec1, Vector3 vec2)
         {
-            if (vec1.Length != 3 || vec2.Length != 3)
-            {
-                throw new ArgumentException("Both vectors must have 3 components.");
-            }
+            
 
-            double[] result = new double[3];
-            result[0] = vec1[1] * vec2[2] - vec1[2] * vec2[1];
-            result[1] = vec1[2] * vec2[0] - vec1[0] * vec2[2];
-            result[2] = vec1[0] * vec2[1] - vec1[1] * vec2[0];
+            Vector3 result = new Vector3();
+            result.X = vec1.Y * vec2.Z - vec1.Z * vec2.Y;
+            result.Y = vec1.Z * vec2.X - vec1.X * vec2.Z;
+            result.Z = vec1.X * vec2.Y - vec1.Y * vec2.X;
 
             return result;
         }
 
-        public static double DotProduct(double[] vector1, double[] vector2)
+        public static float DotProduct(Vector3 v1, Vector3 v2)
         {
-            if (vector1.Length != vector2.Length)
-            {
-                throw new ArgumentException("Vectors must have the same length.");
-            }
-
-            return vector1.Zip(vector2, (v1, v2) => v1 * v2).Sum();
+            return Vector3.Dot(v1, v2);
         }
 
-        public static double[] CalculateCentroid(double[,] vertices)
+        public static Vector3 CalculateCentroid(List<Vector3> vertices)
         {
-            int n = vertices.GetLength(0);  // number of vertices
+            int n = vertices.Count;  // number of vertices
 
             if (n == 0)
                 throw new ArgumentException("The vertices array must have at least one vertex.");
 
-            double sumX = 0;
-            double sumY = 0;
-            double sumZ = 0;
+            float sumX = 0;
+            float sumY = 0;
+            float sumZ = 0;
 
             for (int i = 0; i < n; i++)
             {
-                sumX += vertices[i, 0];
-                sumY += vertices[i, 1];
-                sumZ += vertices[i, 2];
+                sumX += vertices[i].X;
+                sumY += vertices[i].Y;
+                sumZ += vertices[i].Z;
             }
 
-            return new double[] { sumX / n, sumY / n, sumZ / n };
+            return new Vector3( sumX / n, sumY / n, sumZ / n );
         }
 
-        public static void TranslateVertices(double[,] vertices, double[] translation)
+        public static void TranslateVertices(List<Vector3> vertices, Vector3 translation)
         {
-            if (translation.Length != 3)
-                throw new ArgumentException("The translation array must have 3 elements.");
-
-            int n = vertices.GetLength(0);  // number of vertices
+            int n = vertices.Count;  // number of vertices
 
             for (int i = 0; i < n; i++)
             {
-                vertices[i, 0] += translation[0];
-                vertices[i, 1] += translation[1];
-                vertices[i, 2] += translation[2];
+                Vector3 translatedVector = new Vector3(
+                    vertices[i].X + translation.X,
+                    vertices[i].Y + translation.Y,
+                    vertices[i].Z + translation.Z
+                );
+
+                vertices[i] = translatedVector;
             }
         }
 
-        public static void ScaleVertices(double[,] vertices, double[] scalingFactors)
+        public static void ScaleVertices(List<Vector3> vertices, Vector3 scalingFactors)
         {
-            if (scalingFactors.Length != 3)
-                throw new ArgumentException("The scalingFactors array must have 3 elements.");
-
-            int n = vertices.GetLength(0);  // number of vertices
+            int n = vertices.Count;  // number of vertices
 
             for (int i = 0; i < n; i++)
             {
+                Vector3 scaledVector = new Vector3(
+                    vertices[i].X * scalingFactors.X,
+                    vertices[i].Y * scalingFactors.Y,
+                    vertices[i].Z * scalingFactors.Z
+                );
 
-
-                vertices[i, 0] *= scalingFactors[0];
-                vertices[i, 1] *= scalingFactors[1];
-                vertices[i, 2] *= scalingFactors[2];
+                vertices[i] = scaledVector;
             }
         }
 
-        
+
 
 
     }
