@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Numerics;
 
 namespace ModelRender.Models
 {
@@ -13,7 +14,7 @@ namespace ModelRender.Models
     {
         public List<Model> Models;
 
-        private double[] _centroid
+        private Vector3 _centroid
         {
             get { return CalculateCentroid(); }
         }
@@ -42,18 +43,18 @@ namespace ModelRender.Models
             }
         }
 
-        public double[] CalculateCentroid()
+        public Vector3 CalculateCentroid()
         {
-            double sumx = 0;
-            double sumy = 0;
-            double sumz = 0;
+            float sumx = 0;
+            float sumy = 0;
+            float sumz = 0;
             foreach (Model model in  Models)
             {
-                sumx += model.Centroid[0];
-                sumy += model.Centroid[1];
-                sumz += model.Centroid[2];
+                sumx += model.Centroid.X;
+                sumy += model.Centroid.Y;
+                sumz += model.Centroid.Z;
             }
-            return new double[] { (sumx/Models.Count), (sumy/Models.Count), (sumz/Models.Count) };
+            return new Vector3 ( (sumx/Models.Count), (sumy/Models.Count), (sumz/Models.Count) );
         }
 
         public void Translate(double X, double Y, double Z)
@@ -61,7 +62,7 @@ namespace ModelRender.Models
             
         }
 
-        public void Scale(double X, double Y, double Z)
+        public void Scale(float X, float Y, float Z)
         {
             foreach (var model in Models)
             {
@@ -69,7 +70,7 @@ namespace ModelRender.Models
             }
         }
 
-        public async void Scale(double scalar)
+        public async void Scale(float scalar)
         {
             foreach (var model in Models)
             {

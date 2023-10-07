@@ -38,11 +38,11 @@ namespace ModelRotate
             var sphereRadi = ShapeHelper.GenerateSphereRadi(8);
 
             //var sphereModel = new Model("C:\\ModelExports\\sphereplz.json", new double[] { 0, 0,4 });
-            var quarterModel1 = new Model("C:\\ModelExports\\quarter_circle.json", new double[] { 0, 0, 4 });
+            var quarterModel1 = new Model("C:\\ModelExports\\quarter_circle.json", new Vector3( 0, 0, 4 ));
 
-            var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", new double[] { 0, 0, 13 });
-            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 0, 0, 13 });
-            var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", new double[] { 3, 0, 13 });
+            var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", new Vector3(0, 0, 13));
+            var plusModel = new Model("..\\..\\..\\Models\\plus_model.json", new Vector3(0, 0, 13));
+            var plusModel2 = new Model("..\\..\\..\\Models\\plus_model.json", new Vector3(3, 0, 13));
             //var plusModel = new Model("..\\..\\..\\Models\\plus_model.json");
 
             //GCC.AddModels(new List<Model> { sphereModel } );
@@ -59,18 +59,18 @@ namespace ModelRotate
             int horizontalResolution = 8;
             int verticalResolution = 4;
             var models = new List<Model>();
-            double verticalSpace = 1.0 / 16.0;
+            float verticalSpace = (float)(1.0 / 16.0);
 
             for (int i = 0; i < sphereRadi.Length - 1; i++)
             {
                 var hellowurld = verticalSpace * i;
-                Model tempModel = new Model("C:\\ModelExports\\circley.json", new double[] { 0, (verticalSpace * i), 4 });
-                Model tempModel2 = new Model("C:\\ModelExports\\circley.json", new double[] { 0, (verticalSpace * i), 4 });
-                tempModel.RotateX(LinearAlgebra.DegreeToRadians(90));
-                tempModel2.RotateX(LinearAlgebra.DegreeToRadians(270));
+                Model tempModel = new Model("C:\\ModelExports\\circley.json", new Vector3( 0, (verticalSpace * i), 4 ));
+                Model tempModel2 = new Model("C:\\ModelExports\\circley.json", new Vector3(0, (verticalSpace * i), 4));
+                //tempModel.RotateX(LinearAlgebra.DegreeToRadians(90));
+                //tempModel2.RotateX(LinearAlgebra.DegreeToRadians(270));
                 tempModel.Scale(sphereRadi[i]);
                 tempModel2.Scale(sphereRadi[i]);
-                models.Add(tempModel);
+                //models.Add(tempModel);
                 //models.Add(tempModel2);
             }
 
@@ -111,7 +111,7 @@ namespace ModelRotate
 
 
 
-                    faceVertexMap.Add(faceVertex);
+                    //faceVertexMap.Add(faceVertex);
 
                 }
             }
@@ -122,7 +122,7 @@ namespace ModelRotate
             var exportModel = new ExportModel()
             {
                 faces = faceVertexMap.ToArray(),
-                vertices = ArrayHelper.Vec3ToDouble2DArray(faces),
+                vertices = ArrayHelper.Vec3ToFloat2DArray(faces),
                 edges = new int[1][] { new int[] { 0, 0 } },
                 nEdges = 1,
                 nVertices = faces.Count,
@@ -131,7 +131,7 @@ namespace ModelRotate
             };
 
             Model.ExportModel("C:\\ModelExports\\sphere_panel.json", exportModel);
-            Model spherePanel = new Model("C:\\ModelExports\\sphere_panel.json", new double[] {0, 0, 0});
+            Model spherePanel = new Model("C:\\ModelExports\\sphere_panel.json", new Vector3(0, 0, 0));
             //spherePanel.Scale(3, 3, 3);
             models.Add(spherePanel);
             spherePanel.Scale(1,6,1);

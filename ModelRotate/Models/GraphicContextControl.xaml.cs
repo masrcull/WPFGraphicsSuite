@@ -77,8 +77,8 @@ namespace ModelRender.Models
         {
             InitializeComponent();
             //MainStage = new Canvas();
-            Eye = new double[] { 0, 0, 0 };
-            DirectionLight = new double[] { 0, 0, 1 };
+            Eye = new Vector3( 0, 0, 0 );
+            DirectionLight = new Vector3( 0, 0, 1 );
             Meshes = new List<Mesh>();
             Width = 800;
             Height = 800;
@@ -94,9 +94,9 @@ namespace ModelRender.Models
 
         }
 
-        public Model AddModel(string filePath, double X, double Y, double Z)
+        public Model AddModel(string filePath, float X, float Y, float Z)
         {
-            var model = new Model(filePath, new double[] { X, Y, Z });
+            var model = new Model(filePath, new Vector3( X, Y, Z ));
             var mesh = new Mesh(new List<Model> { model });
             Meshes.Add(mesh);
             return model;
@@ -120,7 +120,7 @@ namespace ModelRender.Models
             //Meshes.Models = Meshes.OrderByDescending(obj => obj.CalculateCentroid()[2]).ToList();
             foreach(var mesh in Meshes)
             {
-                mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid[2]).ToList();
+                mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid.Z).ToList();
                 mesh.DrawMesh(this);
             }
         }
@@ -130,30 +130,32 @@ namespace ModelRender.Models
             ShapeHelper.DrawPolygon(points, new SolidColorBrush(Colors.HotPink), this);
         }
 
-        public void CreateCircleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        public void CreateCircleModel(string filePath, float radius, int R = 255, int G = 255, int B = 255)
         {
             var points = ShapeHelper.GenerateCirclePoints(radius, 16);
-            double[,] vertices = new double[points.Length,3];
-            int[] face = new int[points.Length];
+            List<Vector3> vertices = new List<Vector3>();
+            int[] face = new int[points.Count];
 
-            for(int i= 0; i < points.Length; i++)
+            for(int i= 0; i < points.Count; i++)
             {
-                vertices[i,0] = points[i][0];
-                vertices[i, 1] = points[i][1];
-                vertices[i, 2] = 0;
+                float pointX = (float)points[i].X;
+                float pointY = (float)points[i].Y;
+                float pointZ = 0;
+
+                vertices.Add(new Vector3(pointX, pointY, pointZ));
             }
 
-            for(int i = 0;  i < points.Length; i++)
+            for(int i = 0;  i < points.Count; i++)
             {
                 face[i] = i;
             }
 
             var exportModel = new ExportModel
             {
-                vertices = ArrayHelper.ToJaggedArray(vertices),
+                vertices = ArrayHelper.Vec3ToFloat2DArray(vertices),
                 edges = new int[][] { new int[] { 0, 0 } },
                 faces = new int[][] { face },
-                nVertices = (vertices.Length / 3),
+                nVertices = (vertices.Count / 3),
                 nEdges = 1,
                 nFaces = 1,
                 color = new int[] { R, G, B}
@@ -165,30 +167,32 @@ namespace ModelRender.Models
 
         }
 
-        public void CreateQuarterCircleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        public void CreateQuarterCircleModel(string filePath, float radius, int R = 255, int G = 255, int B = 255)
         {
             var points = ShapeHelper.GenerateQuarterCirclePoints(radius, 4);
-            double[,] vertices = new double[points.Length, 3];
-            int[] face = new int[points.Length];
+            List<Vector3> vertices = new List<Vector3>();
+            int[] face = new int[points.Count];
 
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Count; i++)
             {
-                vertices[i, 0] = points[i][0];
-                vertices[i, 1] = points[i][1];
-                vertices[i, 2] = 0;
+                float pointX = points[i].X;
+                float pointY = points[i].Y;
+                float pointZ = 0;
+
+                vertices.Add(new Vector3(pointX, pointY, pointZ));
             }
 
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Count; i++)
             {
                 face[i] = i;
             }
 
             var exportModel = new ExportModel
             {
-                vertices = ArrayHelper.ToJaggedArray(vertices),
+                vertices = ArrayHelper.Vec3ToFloat2DArray(vertices),
                 edges = new int[][] { new int[] { 0, 0 } },
                 faces = new int[][] { face },
-                nVertices = (vertices.Length / 3),
+                nVertices = (vertices.Count / 3),
                 nEdges = 1,
                 nFaces = 1,
                 color = new int[] { R, G, B }
@@ -200,26 +204,18 @@ namespace ModelRender.Models
 
         }
 
-        public void CreateTriangleModel(string filePath, double radius, int R = 255, int G = 255, int B = 255)
+        public void CreateTriangleModel(string filePath, float radius, int R = 255, int G = 255, int B = 255)
         {
-            double[,] vertices = new double[3, 3];
+            List<Vector3> vertices = new List<Vector3>();
             int[] face = new int[] { 0, 1, 2 } ;
 
-            vertices[0,0] = 0;
-            vertices[0, 1] = radius;
-            vertices[0, 2] = 0;
-
-            vertices[1, 0] = radius;
-            vertices[1, 1] = -radius;
-            vertices[1, 2] = 0;
-
-            vertices[2, 0] = -radius;
-            vertices[2, 1] = -radius;
-            vertices[2, 2] = 0;
+            vertices.Add(new Vector3((float)0, radius, (float)0));
+            vertices.Add(new Vector3(radius, -radius, (float)0));
+            vertices.Add(new Vector3(-radius, -radius, (float)0));
 
             var exportModel = new ExportModel
             {
-                vertices = ArrayHelper.ToJaggedArray(vertices),
+                vertices = ArrayHelper.Vec3ToFloat2DArray(vertices),
                 edges = new int[][] { new int[] { 0, 0 } },
                 faces = new int[][] { face },
                 nVertices = (3),
