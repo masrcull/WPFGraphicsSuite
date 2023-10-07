@@ -81,7 +81,7 @@ namespace ShadowTrajectory
             {
                 //table.RotateY(.1);
                 //shadow.RotateY(-.1);
-                circleMesh.RotateY(.1);
+                //circleMesh.RotateY(.1);
             });
 
             GCC.Start();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,12 +40,12 @@ namespace MotionBlindness
         bool diameterChanged = true;
         bool plusChange = false;
 
-        double circleScalar = .2;
+        float circleScalar = .2f;
 
-        const double plusRenderMin = -8.5;
-        const double plusRenderMax = 8.5;
+        const float plusRenderMin = -8.5f;
+        const float plusRenderMax = 8.5f;
 
-        double[,] OGVerts;
+        //double[,] OGVerts;
 
         double rotationSpeed = -.05;
 
@@ -68,7 +69,7 @@ namespace MotionBlindness
             //GCC.AddMesh(circleNorthMesh);
 
 
-            var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { 6, 6, 13.0 });
+            var plusModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new Vector3( 6, 6, 13.0f ));
             renderPlusses();
             //circleMesh = GCC.AddModels(new List<Model> { circleModelNorth, circleModelEast, circleModelSouth, circleModelWest });
             circleNorthMesh.SetColorAllModels((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
@@ -80,11 +81,11 @@ namespace MotionBlindness
 
                 if (diameterChanged)
                 {
-                    circleScalar = diameterSlider.Value;
-                    var modelNorth = new Model(dataCircleNorth, 0, 4.5, 12);
-                    var modelEast = new Model(dataCircleEast, 4.5, 0, 12);
-                    var modelSouth = new Model(dataCircleSouth, 0, -4.5, 12);
-                    var modelWest = new Model(dataCircleWest, -4.5, 0, 12);
+                    circleScalar = (float)diameterSlider.Value;
+                    var modelNorth = new Model(dataCircleNorth, 0, 4.5f, 12);
+                    var modelEast = new Model(dataCircleEast, 4.5f, 0, 12);
+                    var modelSouth = new Model(dataCircleSouth, 0, -4.5f, 12);
+                    var modelWest = new Model(dataCircleWest, -4.5f, 0, 12);
 
                     modelNorth.Scale(circleScalar);
                     modelEast.Scale(circleScalar);
@@ -109,11 +110,11 @@ namespace MotionBlindness
                     var models = new List<Model>();
 
 
-                    for (double i = plusRenderMin; i < plusRenderMax; i += distanceSlider.Value)
+                    for (float i = plusRenderMin; i < plusRenderMax; i += (float)distanceSlider.Value)
                     {
-                        for (double j = plusRenderMax; j > plusRenderMin; j -= distanceSlider.Value)
+                        for (float j = plusRenderMax; j > plusRenderMin; j -= (float)distanceSlider.Value)
                         {
-                            models.Add(new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new double[] { i, -j, 13.0 }));
+                            models.Add(new Model("..\\..\\..\\..\\ModelRotate\\Models\\plus_model_flat.json", new Vector3( i, -j, 13.0f )));
                         }
                     }
 

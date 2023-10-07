@@ -84,7 +84,7 @@ namespace ModelRender.Models
             Height = 800;
             MainStage.Width = Width;
             MainStage.Height = Height;
-            MainStage.Background = new SolidColorBrush(Colors.White);
+            MainStage.Background = new SolidColorBrush(Colors.Black);
 
             _actions = new List<Action>();
             _timer = new DispatcherTimer();
