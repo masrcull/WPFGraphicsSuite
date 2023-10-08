@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,12 +25,12 @@ namespace SpacialFreq
     {
 
         GraphicContextControl GCC = new GraphicContextControl();
-        public double WhiteLineMultiplier;
+        public float WhiteLineMultiplier;
         public int GrayAmount;
 
         List<Model> models = new List<Model>();
 
-        double lineStart = 8;
+        float lineStart = 8;
 
         public Model greyCube;
 
@@ -43,14 +44,14 @@ namespace SpacialFreq
 
             GCC.ClearOnDraw = false;
 
-            WhiteLineMultiplier = lineAmountSlider.Value;
+            WhiteLineMultiplier = (float)lineAmountSlider.Value;
             GrayAmount = 127;
 
 
 
-            greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
-            greyCube.Scale(new double[] { 35, 17, 0 });
-            greyCube.Translate(new double[] { 0, -9, 0 });
+            greyCube = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new Vector3( 0, 0, 13 ));
+            greyCube.Scale(new Vector3(35, 17, 0 ));
+            greyCube.Translate(new Vector3(0, -9, 0));
 
             greyCube.SetColor(GrayAmount, GrayAmount, GrayAmount);
 
@@ -84,23 +85,23 @@ namespace SpacialFreq
             }
 
             models = new List<Model>();
-            double[] currentCentroid;
+            Vector3 currentCentroid;
             var currentY = lineStart;
 
-            var primerModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
+            var primerModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new Vector3(0, 0, 13));
             primerModel.SetColor(1, 1, 50);
-            primerModel.Scale(new double[] { 35, WhiteLineMultiplier, 0 });
+            primerModel.Scale(new Vector3( 35, WhiteLineMultiplier, 0 ));
             primerModel.Translate(0, currentY, 0);
             currentCentroid = primerModel.Centroid;
             models.Add(primerModel);
 
             currentY = (currentY - WhiteLineMultiplier * 2);
 
-            while (currentCentroid[1] > 0)
+            while (currentCentroid.Y > 0)
             {
-                var tempModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new double[] { 0, 0, 13 });
+                var tempModel = new Model("..\\..\\..\\..\\ModelRotate\\Models\\cube_model.json", new Vector3(0, 0, 13));
                 tempModel.SetColor(200,200,200);
-                tempModel.Scale(new double[] { 35, WhiteLineMultiplier, 0 });
+                tempModel.Scale(new Vector3(35, WhiteLineMultiplier, 0));
                 tempModel.Translate(0, currentY, 0);
                 currentY = (currentY - WhiteLineMultiplier * 2);
                 models.Add(tempModel);
@@ -124,8 +125,8 @@ namespace SpacialFreq
         private void lineAmountSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {   
             if(lblFrequency != null)
-                lblFrequency.Content = ((double)e.NewValue).ToString();
-            WhiteLineMultiplier = (double)e.NewValue;
+                lblFrequency.Content = ((float)e.NewValue).ToString();
+            WhiteLineMultiplier = (float)e.NewValue;
             DrawScene();
         }
 

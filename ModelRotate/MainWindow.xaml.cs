@@ -111,7 +111,7 @@ namespace ModelRotate
 
 
 
-                    //faceVertexMap.Add(faceVertex);
+                    faceVertexMap.Add(faceVertex);
 
                 }
             }
