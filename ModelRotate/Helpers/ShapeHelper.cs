@@ -142,6 +142,20 @@ namespace GraphicsCommon
             
         }
 
+        public static float[] GenerateSphereVerticalSpace(int numPoints)
+        {
+            var quarterPoints = GenerateQuarterCirclePoints(1, numPoints);
+            float[] verticalSpace = new float[numPoints];
+
+            for (int i = 0; i < quarterPoints.Count; i++)
+            {
+                verticalSpace[i] = CalculateDistance2D(quarterPoints[i], new Vector3(quarterPoints[i].X, 0, 0))/4;
+            }
+
+            return verticalSpace;
+
+        }
+
         //public static double[][] GenerateSphere(int numPoints)
         //{
         //    var coordMapper = new CoordinateMapper();

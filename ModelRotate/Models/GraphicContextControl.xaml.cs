@@ -120,7 +120,7 @@ namespace ModelRender.Models
             //Meshes.Models = Meshes.OrderByDescending(obj => obj.CalculateCentroid()[2]).ToList();
             foreach(var mesh in Meshes)
             {
-                mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid.Z).ToList();
+                //mesh.Models = mesh.Models.OrderByDescending(obj => obj.Centroid.Z).ToList();
                 mesh.DrawMesh(this);
             }
         }
