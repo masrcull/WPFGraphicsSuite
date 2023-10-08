@@ -78,7 +78,7 @@ namespace ModelRender.Models
             InitializeComponent();
             //MainStage = new Canvas();
             Eye = new Vector3( 0, 0, 0 );
-            DirectionLight = new Vector3( -1, 0, 1 );
+            DirectionLight = new Vector3( 1, 1, -1 );
             Meshes = new List<Mesh>();
             Width = 800;
             Height = 800;
@@ -163,29 +163,7 @@ namespace ModelRender.Models
             };
 
             Model.ExportModel(filePath, exportModel);
-
-
-        }
-
-        public void CreateQuarterCircleModel(string filePath, float radius, int R = 255, int G = 255, int B = 255)
-        {
-            var points = ShapeHelper.GenerateQuarterCirclePoints(radius, 4);
-            List<Vector3> vertices = new List<Vector3>();
-            int[] face = new int[points.Count];
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                float pointX = points[i].X;
-                float pointY = points[i].Y;
-                float pointZ = 0;
-
-                vertices.Add(new Vector3(pointX, pointY, pointZ));
-            }
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                face[i] = i;
-            }
+            ++
 
             var exportModel = new ExportModel
             {

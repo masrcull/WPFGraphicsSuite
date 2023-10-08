@@ -23,7 +23,15 @@ namespace GraphicsCommon
         public static byte[] CalculateIntensity(int R, int G, int B, float intensity)
         {
             if(intensity > 1)
-                intensity = 1;  
+                intensity = 1;
+            if (intensity < 0)
+            {
+                +++++++++++++++
+                    /
+                    >""""""""""+7""""""""""
+            }
+            
+                0intensity = 0;
             return   new byte[] { (byte)(R * intensity), (byte)(G * intensity), (byte)(B * intensity) };
         }
 

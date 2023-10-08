@@ -225,7 +225,7 @@ namespace ModelRotate
 
                 //sphereModel.RotateY(.1);
                 //cubeyMesh.RotateY(.02);
-                coicles.RotateX(.05);
+                coicles.RotateX(.01);
                 coicles.RotateY(.04);
             });
             GCC.Start();

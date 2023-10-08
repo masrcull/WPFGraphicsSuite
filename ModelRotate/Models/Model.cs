@@ -387,7 +387,7 @@ namespace GraphicsCommon
                     {
                         var faceNormal = LinearAlgebra.Normalize(CalculateNormal(Vertices, faceVertices));
                         var intensity = LinearAlgebra.DotProduct(faceNormal, contextControl.DirectionLight);
-                        var adjustedColor = ColorHelper.CalculateIntensity(color[0], color[1], color[2], Math.Abs(intensity));
+                        var adjustedColor = ColorHelper.CalculateIntensity(color[0], color[1], color[2], intensity);
                         ShapeHelper.DrawPolygon(points.ToList(), new SolidColorBrush(Color.FromRgb(adjustedColor[0], adjustedColor[1], adjustedColor[2])), contextControl.MainStage);
                     }
                     else
