@@ -34,6 +34,9 @@ namespace GraphicsCommon
                 return _nextInt++;
             }
         }
+
+        public int Count { get { return _coordinateToInt.Count; } }
+
     }
 
     public class ShapeHelper

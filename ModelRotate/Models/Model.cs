@@ -196,23 +196,7 @@ namespace GraphicsCommon
             return modelData;
         }
 
-        public static Model CreateModel(string filePath, Vector3 initialCoordinates, Canvas mainStage)
-        {
-            var model = new Model("filePath");
-            model.Translate(initialCoordinates);
-
-            return model;
-        }
-
-        public Model(int nvertices, int nedges, int nfaces)
-        {
-            Vertices = new List<Vector3>();
-            edges = new int[nedges, 2];
-            faces = new int[nfaces, 4];
-            nVertices = nvertices;
-            nEdges = nedges;
-            nFaces = nfaces;
-        }
+        
 
         private static ExportModel ToExportModel(Model model)
         {
