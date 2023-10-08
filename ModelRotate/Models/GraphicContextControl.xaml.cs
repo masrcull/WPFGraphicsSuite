@@ -1,23 +1,13 @@
-﻿using System;
+﻿using GraphicsCommon;
+using ModelRender.Helpers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml.Serialization;
-using GraphicsCommon;
-using ModelRender.Helpers;
-using ModelRender.Models;
 
 namespace ModelRender.Models
 {
@@ -163,7 +153,29 @@ namespace ModelRender.Models
             };
 
             Model.ExportModel(filePath, exportModel);
-            ++
+
+
+        }
+
+        public void CreateQuarterCircleModel(string filePath, float radius, int R = 255, int G = 255, int B = 255)
+        {
+            var points = ShapeHelper.GenerateQuarterCirclePoints(radius, 4);
+            List<Vector3> vertices = new List<Vector3>();
+            int[] face = new int[points.Count];
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                float pointX = points[i].X;
+                float pointY = points[i].Y;
+                float pointZ = 0;
+
+                vertices.Add(new Vector3(pointX, pointY, pointZ));
+            }
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                face[i] = i;
+            }
 
             var exportModel = new ExportModel
             {
@@ -176,7 +188,7 @@ namespace ModelRender.Models
                 color = new int[] { R, G, B }
 
             };
-
+            
             Model.ExportModel(filePath, exportModel);
 
 

@@ -26,12 +26,8 @@ namespace GraphicsCommon
                 intensity = 1;
             if (intensity < 0)
             {
-                +++++++++++++++
-                    /
-                    >""""""""""+7""""""""""
+                intensity = 0;
             }
-            
-                0intensity = 0;
             return   new byte[] { (byte)(R * intensity), (byte)(G * intensity), (byte)(B * intensity) };
         }
 
