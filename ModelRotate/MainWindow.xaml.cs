@@ -35,7 +35,7 @@ namespace ModelRotate
 
            // GCC.DirectionalLightEnabled = false;
 
-            var sphereRadi = ShapeHelper.GenerateSphereRadi(8);
+            var sphereRadi = ShapeHelper.GenerateSphereRadi(16);
 
             //var sphereModel = new Model("C:\\ModelExports\\sphereplz.json", new double[] { 0, 0,4 });
             var quarterModel1 = new Model("C:\\ModelExports\\quarter_circle.json", new Vector3( 0, 0, 4 ));
@@ -56,13 +56,11 @@ namespace ModelRotate
             byte blue = 200;
 
 
-            int horizontalResolution = 8;
-            int verticalResolution = 4;
             var models = new List<Model>();
             var cubeys = new List<Model>();
-            float verticalSpace = (float)(1.0 / 16.0);
+            float verticalSpace = (float)(.5 / 16.0);
 
-            for (int i = 0; i < sphereRadi.Length - 1; i++)
+            for (int i = 0; i < sphereRadi.Length; i++)
             {
                 var hellowurld = verticalSpace * i;
                 Model tempModel = new Model("C:\\ModelExports\\circley.json", new Vector3( 0, (verticalSpace * i), 4 ));
@@ -119,24 +117,27 @@ namespace ModelRotate
                     
                     faceMap.Add(currentFaceMap);
 
-                    //if (i == models.Count - 2)
-                    //{
-                    //    currentFaceMap = new int[3];
+                    if (i == models.Count - 2)
+                    {
+                        currentFaceMap = new int[3];
 
-                    //    AddUnique(faces, models[i + 1].Vertices[j]);
-                    //    currentFaceMap[0] = coordMap.GetOrAdd(i, j);
+                        AddUnique(faces, models[i + 1].Vertices[(j + 1) % models[i + 1].Vertices.Count]);
+                        currentFaceMap[0] = coordMap.GetOrAdd(i + 1, j);
 
-                    //    AddUnique(faces, new Vector3(0, 1, 0));
-                    //    currentFaceMap[1] = coordMap.GetOrAdd(31337, 420420);
 
-                    //    AddUnique(faces, models[i + 1].Vertices[(j + 1) % models[i + 1].Vertices.Count]);
-                    //    currentFaceMap[2] = coordMap.GetOrAdd(i + 10002 + 1, j + 10002);
-                    //    faceMap.Add(currentFaceMap);
-                    //}
+
+                        AddUnique(faces, new Vector3(models[i + 1].Centroid.X, 1f, models[i + 1].Centroid.Z));
+                        currentFaceMap[1] = coordMap.GetOrAdd(models.Count + 1, 0);
+
+                        AddUnique(faces, models[i + 1].Vertices[j]);
+                        currentFaceMap[2] = coordMap.GetOrAdd(i, j);
+
+
+                        faceMap.Add(currentFaceMap);
+                    }
 
                 }
                 
-                //Faces.Add(currentFace);
             }
 
 
@@ -194,8 +195,8 @@ namespace ModelRotate
             //var cubeyMesh = GCC.AddModels(cubeys);
 
 
-            coicles.RotateX(.1);
-            coicles.RotateY(2.5);
+            //coicles.RotateX(.1);
+            //coicles.RotateY(2.5);
             
 
 
@@ -207,8 +208,8 @@ namespace ModelRotate
 
                 //sphereModel.RotateY(.1);
                 //cubeyMesh.RotateY(.02);
-                coicles.RotateX(.01);
-                coicles.RotateY(.04);
+                //coicles.RotateX(.01);
+                coicles.RotateX(.04);
             });
             GCC.Start();
 

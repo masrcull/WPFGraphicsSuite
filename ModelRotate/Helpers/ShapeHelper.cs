@@ -46,7 +46,7 @@ namespace GraphicsCommon
             Polygon polygon = new Polygon
             {
                 Fill = color,  // Optional: Set the fill color
-                Stroke = Brushes.Black,    // Optional: Set the border color
+                Stroke = Brushes.Transparent,    // Optional: Set the border color
                 StrokeThickness = 1       // Optional: Set the border thickness
             };
 
