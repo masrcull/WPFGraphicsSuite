@@ -20,7 +20,7 @@ namespace GraphicsCommon
             return (byte)(rgbByte + (isIncrease ? (rgbByte < 240 ? incrementAmount : ((isIncrease = false) ? -incrementAmount : 0)) : (rgbByte > 15 ? -incrementAmount : ((isIncrease = true) ? incrementAmount : 0))));
         }
 
-        public static byte[] CalculateIntensity(int R, int G, int B, double intensity)
+        public static byte[] CalculateIntensity(int R, int G, int B, float intensity)
         {
             if(intensity > 1)
                 intensity = 1;  

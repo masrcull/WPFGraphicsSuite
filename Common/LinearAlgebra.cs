@@ -101,6 +101,16 @@ namespace GraphicsCommon
             return new Vector3( sumX / n, sumY / n, sumZ / n );
         }
 
+        public static Vector3 Normalize(Vector3 v)
+        {
+            float length = (float)Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+
+            if (length == 0)
+                return v; // prevent division by zero. Ideally, this should never be the case for normals.
+
+            return new Vector3(v.X / length, v.Y / length, v.Z / length);
+        }
+
         public static void TranslateVertices(List<Vector3> vertices, Vector3 translation)
         {
             int n = vertices.Count;  // number of vertices

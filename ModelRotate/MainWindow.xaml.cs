@@ -33,7 +33,7 @@ namespace ModelRotate
             MainStage.Children.Add(GCC);
             GCC.DirectionalLightEnabled = true;
 
-            GCC.DirectionalLightEnabled = false;
+           // GCC.DirectionalLightEnabled = false;
 
             var sphereRadi = ShapeHelper.GenerateSphereRadi(8);
 
@@ -71,19 +71,19 @@ namespace ModelRotate
                 tempModel2.RotateX(LinearAlgebra.DegreeToRadians(270));
                 tempModel.Scale(sphereRadi[i]);
                 tempModel2.Scale(sphereRadi[i]);
-                //models.Add(tempModel);
-                models.Add(tempModel2);
+                models.Add(tempModel);
+                //models.Add(tempModel2);
             }
 
             var cubeModel = new Model("..\\..\\..\\Models\\cube_model.json", models[0].Vertices[0]);
             var cubeModel2 = new Model("..\\..\\..\\Models\\cube_model.json", models[0].Vertices[1]);
 
-            cubeModel.Scale(.05f);
-            cubeModel2.Scale(.05f);
+            //cubeModel.Scale(.05f);
+            //cubeModel2.Scale(.05f);
 
             cubeModel.SetColor(0,0,200);
 
-            //cubeys.Add(cubeModel);
+            cubeys.Add(cubeModel);
             //cubeys.Add(cubeModel2);
 
             //List<List<Vector3>> Faces = new List<List<Vector3>>();
@@ -97,31 +97,45 @@ namespace ModelRotate
 
 
 
-            for (int i = 0; i < models.Count -1; i++)
+            for (int i = 0; i < models.Count - 1; i++)
             {
 
-                for (int j = 0; j <3; j++)
+                for (int j = 0; j < models[i].nVertices; j++)
                 {
                     var currentFaceMap = new int[4];
 
                     AddUnique(faces, models[i + 1].Vertices[j]);
-                    currentFaceMap[3] = coordMap.GetOrAdd(i+ 1, j);
+                    currentFaceMap[0] = coordMap.GetOrAdd(i+ 1, j);
 
                     AddUnique(faces, models[i].Vertices[j]);
-                    currentFaceMap[2] = coordMap.GetOrAdd(i, j);
+                    currentFaceMap[1] = coordMap.GetOrAdd(i, j);
 
                     AddUnique(faces, models[i].Vertices[(j + 1)  % models[i].Vertices.Count]);
-                    currentFaceMap[1] = coordMap.GetOrAdd(i, (j + 1) % models[i].Vertices.Count);
+                    currentFaceMap[2] = coordMap.GetOrAdd(i, (j + 1) % models[i].Vertices.Count);
 
                     AddUnique(faces, models[i + 1].Vertices[(j+1)  % models[i + 1].Vertices.Count]);
-                    currentFaceMap[0] = coordMap.GetOrAdd(i + 1, (j + 1) % models[i + 1].Vertices.Count);
+                    currentFaceMap[3] = coordMap.GetOrAdd(i + 1, (j + 1) % models[i + 1].Vertices.Count);
 
                     
-
                     faceMap.Add(currentFaceMap);
 
-                }
+                    //if (i == models.Count - 2)
+                    //{
+                    //    currentFaceMap = new int[3];
 
+                    //    AddUnique(faces, models[i + 1].Vertices[j]);
+                    //    currentFaceMap[0] = coordMap.GetOrAdd(i, j);
+
+                    //    AddUnique(faces, new Vector3(0, 1, 0));
+                    //    currentFaceMap[1] = coordMap.GetOrAdd(31337, 420420);
+
+                    //    AddUnique(faces, models[i + 1].Vertices[(j + 1) % models[i + 1].Vertices.Count]);
+                    //    currentFaceMap[2] = coordMap.GetOrAdd(i + 10002 + 1, j + 10002);
+                    //    faceMap.Add(currentFaceMap);
+                    //}
+
+                }
+                
                 //Faces.Add(currentFace);
             }
 
@@ -177,9 +191,10 @@ namespace ModelRotate
             models.Add(spherical);
 
             var coicles = GCC.AddModels(models);
+            //var cubeyMesh = GCC.AddModels(cubeys);
 
 
-            //coicles.RotateX(.1);
+            coicles.RotateX(.1);
             coicles.RotateY(2.5);
             
 
@@ -191,7 +206,7 @@ namespace ModelRotate
                 green = ColorHelper.IncrementRgbByte(green, (byte)8, ref greenIncrease);
 
                 //sphereModel.RotateY(.1);
-
+                //cubeyMesh.RotateY(.02);
                 coicles.RotateX(.01);
                 coicles.RotateY(.04);
             });

@@ -78,7 +78,7 @@ namespace ModelRender.Models
             InitializeComponent();
             //MainStage = new Canvas();
             Eye = new Vector3( 0, 0, 0 );
-            DirectionLight = new Vector3( 0, 0, 1 );
+            DirectionLight = new Vector3( -1, 0, 1 );
             Meshes = new List<Mesh>();
             Width = 800;
             Height = 800;
